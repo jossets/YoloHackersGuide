@@ -1,0 +1,400 @@
+[Intro]
+id=intro
+category=Shell
+title=Shell
+desc="
+Ton terminal utilise des commandes shell pour manipuler le système de fichier.
+.
+Il existe plusieurs shells, chacun avec leur particularité.
+Nous regardons le plus commun, le shell bash.
+.
+Tu es connecté sur un compte, que tu peux connaitre avec la commande id.
+Ce compte a des droits, et appartient à des groupes.
+Avec la commande ls -al xxx, tu affiches les droits de chaque fichiers.
+.
+Le jeu va consister à trouver les fichiers appartenant à d'autres comptes, avec des droits en lecture trop ouverts.
+Nous allons aussi essayer de nous connecter à d'autres comptes.
+L'objectif étant de passer sur le compte administrateur (root).
+"
+desc_en="
+Your terminal uses shell commands to manipulate the file system.
+.
+There are several shells, each with its own particularity.
+We are looking at the most common one, the bash shell.
+.
+You are logged into an account, which you can get to know with the command id.
+This account has rights, and belongs to groups.
+With the command ls -al xxx, you display the rights of each file.
+.
+We will read every readable file belonging to other accounts and get valuables informations.
+We will also try to get acces to other accounts.
+The ultimate goal is to get the administrator's account (root).
+"
+
+
+[Commandes]
+id=commandes
+category=Shell
+keywords=
+title=Commandes shell usuelles
+title_en=Common shell commands
+desc="
+<pre><code>ls        : afficher le contenu du répertoire courant
+ls -l     : afficher le contenu du répertoire courant, avec des info sur les droits des fichiers
+ls -l xxx : afficher les droits du fichier xxx
+ls -al    : afficher le contenu du répertoire courant, y compris les fichiers cachés
+cat xxx   : afficher le contenu du fichier xxx
+pwd       : répertoire courant
+cd xxx    : se déplacer dans le répertoire xxx
+cd ..     : se déplacer vers le répertoire parent
+id        : identifiant du compte et groupes auquel il appartient
+uname -a  : informations sur le serveur: quelle distribution et version du kernel.
+</code></pre>
+"
+desc_en="
+<pre><code>ls        : display the content of the current directory
+ls -l     : display the contents of the current directory, with info on file permissions
+ls -l xxx : display the rights of file xxx
+ls -al    : display the contents of the current directory, including hidden files
+cat xxx   : display the content of file xxx
+pwd       : current directory
+cd xxx    : move to the xxx directory
+cd .      : move to parent directory
+id        : identifier of the current account and groups it belongs to
+uname -a  : server information: which distribution and kernel version.
+</code></pre>
+"
+
+
+[flag_shell]
+id=flag_shell
+category=Shell
+keywords=
+title=Flag
+title_en=Flag
+desc="
+Quelques flags sont accessibles dans ton terminal.<br/>
+Tu peux commencer dans le répertoire /home/yolo/flags avant d'étendre à tout ton système.<br/>
+C'est l'occasion de mettre en pratique les commandes détaillées dans ce chapitre.
+Et puisque tu lis la doc, c'est cadeau : Flag_rtfm_shell
+<pre><code>cd ~/flags
+</code></pre>
+"
+desc_en="
+Some flags can be found in your terminal.<br/>
+Start in the /home/yolo/flags directory before expanding to your entire system.<br/>
+This is an opportunity to practice the commands detailed in this chapter.
+And since you read the manual, here is a gift: Flag_rtfm_shell
+<pre><code>cd ~/flags
+</code></pre>
+"
+
+
+[Dir]
+id=dir
+category=Shell
+keywords=
+title=Répertoires courants
+title_en=Common directories
+desc="
+Le système de fichier Unix part de la racine : /<br/>
+Il contient généralement les répertoires:
+<pre><code>/home/xxx : un répertoire par compte utilisateur xxx
+~        : votre répertoire utilisateur
+/root    : le répertoire de l'administrateur
+/tmp     :  fichiers temporaires
+/bin     : commandes systèmes
+/etc     : fichiers de configuration du système
+/var/log : logs des programmes comme le serveur web
+/var/www : emplacement par défaut des fichiers des serveurs web
+</code></pre>
+"
+desc_en="
+The Unix file system starts from the root: /<br/>
+It usually contains the directories:
+<pre><code>/home/xxx: one directory per user account xxx
+~        : your user directory
+/root    : the administrator's directory
+/tmp     : temporary files
+/bin     : system commands
+/etc     : system configuration files
+/var/log : logs of programs like the web server
+/var/www : default location for web server files
+</code></pre>
+"
+
+[Files]
+id=files
+category=Shell
+keywords=
+title=Fichiers utiles
+title_en=Usefull files
+desc="
+<pre><code>/etc/passwd : liste des comptes de la machine
+/etc/hosts : le nom de la machine et ses alias
+</code></pre>
+"
+desc_en="
+<pre><code>/etc/passwd : users list
+/etc/hosts : host names and aliases
+</code></pre>
+"
+
+[SSH]
+id=ssh
+category=Shell
+keywords=
+title=SSH
+desc="
+Les connections aux serveurs se font en ssh.<br/>
+Soit avec un login/password
+<pre><code>ssh user@hostname
+</code></pre>
+Soit avec un fichier de clef privée
+<pre><code>ssh -i id_rsa user@hostname
+</code></pre>
+"
+desc_en="
+Connections to the servers are done in ssh.<br/>
+Either with a login/password
+<pre><code>ssh user@hostname
+</code></pre>
+Either with a private key file
+<pre><code>ssh -i id_rsa user@hostname
+</code></pre>
+"
+
+[SSHIDRSA]
+id=sshidrsa
+category=Shell
+keywords=
+title=SSH : Clef privées / Publiques
+desc="
+Sur les serveurs, il est fréquent de s'identifier avec une clef privée plutôt qu'un mot de passe. 
+Vos clefs se trouvent en : 
+<pre><code>$ ls -al ~/.ssh
+total 20
+drwx------  2 yolo yolo 4096 Apr  4 13:47 .
+drwxr-xr-x 27 yolo yolo 4096 Apr  4 13:22 ..
+-rw-------  1 yolo yolo 2610 Apr  4 13:47 id_rsa
+-rw-r--r--  1 yolo yolo  575 Apr  4 13:47 id_rsa.pub
+-rw-r--r--  1 yolo yolo 1998 Apr  1 19:45 known_hosts
+</code></pre>
+Les clefs privées permettant de se connecter à votre compte sont dans le fichier :
+<pre><code>~/.ssh/authorized_keys
+</code></pre>
+"
+title_en=SSH : Private / Public keys pairs
+desc_en="
+On servers, it is common to identify yourself with a private key rather than a password. 
+Your keys can be found in : 
+<pre><code>$ ls -al ~/.ssh
+total 20
+drwx------  2 yolo yolo 4096 Apr  4 13:47 .
+drwxr-xr-x 27 yolo yolo 4096 Apr  4 13:22 ..
+-rw-------  1 yolo yolo 2610 Apr  4 13:47 id_rsa
+-rw-r--r--  1 yolo yolo  575 Apr  4 13:47 id_rsa.pub
+-rw-r--r--  1 yolo yolo 1998 Apr  1 19:45 known_hosts
+</code></pre>
+Your private keys are in the file :
+<pre><code>~/.ssh/authorized_keys
+</code></pre>
+"
+
+
+[SSHIDRSAGEN]
+id=sshidrsagen
+category=Shell
+keywords=
+title=SSH : Générer des clef   
+desc="
+Générer une paire de clef privée/publique:<br/>
+Taper juste [entrée] à (empty for no passphrase) pour générer une clef privée sans mot de passe.
+Si vous saisissez un mot de passe, votre clef sera chiffrée, et vous devrez taper le mot de passe à chaque utilisation.
+<pre><code>$ ssh-keygen -t rsa -b 4096 -C yolo@yoloctf.org -f id_rsa
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again:
+Your identification has been saved in id_rsa
+Your public key has been saved in id_rsa.pub
+The key fingerprint is:
+SHA256:OSHYGRwrI7LM9/8haFfVXgBlXrdHcdfEZxIv9CeWg5Q yolo@yoloctf.org
+The key's randomart image is:
++---[RSA 4096]----+
+|     .o.   .+=o*O|
+|     o.+   .Eo+=X|
+|. . + = .  ..o*=*|
+|oo . o . o. ...+o|
+|.o .    S.   .   |
+|  . . . ..       |
+|     + o .       |
+|    . o . .      |
+|       ...       |
++----[SHA256]-----+
+</code></pre>
+Le fichier de clef privée ne doit être lisible que par son propriétaire.<br/>
+Si besoin faire : chmod 600 id_rsa.
+<pre><code>vagrant@kali:/home/yolo/tmp$ ls -al
+total 16
+drwxrwxrwx  2 yolo      yolo   4096 Apr  4 13:24 .
+drwxr-xr-x 27 yolo 		yolo   4096 Apr  4 13:22 ..
+-rw-------  1 yolo      yolo   3381 Apr  4 13:24 id_rsa
+-rw-r--r--  1 yolo      yolo    742 Apr  4 13:24 id_rsa.pub
+</code></pre>
+Les entêtes de clef privées sont caractéristiques
+<pre><code>$ cat id_rsa
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
+NhAAAAAwEAAQAAAgEA4hHFXkYNJLp47GZdP1LEJ3rueKhu4c9SCqzbeJfaWUJY/nZSmV76
+7KrJLvv/4Ve+Dm5bLwhJ9BkLessiIlGgx0ju+ghI7V+Ar+qAhir5chpVSGH4YIk0J8VDbJ
+...
+O9mUtgl8PKUd5AQL6sMM/FaYffu7+OFQkJzv3hxyiFEQPhsAo2K55cG8S0RWCX9Jp96U54
+lOXLj6MfGkfzuvvFS4pm9iTBrwKq8h7CubmNOnHe3TH3U/Mrzf6wq8MwAEpSeTWfnBGdRP
+tHOBQdCIQj3JAAAAEHlvbG9AeW9sb2N0Zi5vcmcBAg==
+-----END OPENSSH PRIVATE KEY-----
+</code></pre>
+Entête d'une clef privée protégée par mot de passe:
+<pre><code>$ cat id_rsa
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: AES-128-CBC,2AF25325A9B318F344B8391AFD767D6D
+
+NhAAAAAwEAAQAAAgEA4hHFXkYNJLp47GZdP1LEJ3rueKhu4c9SCqzbeJfaWUJY/nZSmV76
+</code></pre>
+
+
+La clef publique associée :
+<pre><code>$ cat id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQAxxxxx8/QoN3NBob3zs4l2mfZWkZNAtCHN2CpQ== yolo@yoloctf.org
+</code></pre>
+"
+
+; eng
+title_en=SSH : Generate a private/public key pair   
+desc_en="
+Generate a private/public key pair:<br/>
+Just type [enter] to (empty for no passphrase) to generate a private key without a password.
+If you enter a password, your key will be encrypted, and you will have to type the password every time you use it.
+<pre><code>$ ssh-keygen -t rsa -b 4096 -C yolo@yoloctf.org -f id_rsa
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again:
+Your identification has been saved in id_rsa
+Your public key has been saved in id_rsa.pub
+The key fingerprint is:
+SHA256:OSHYGRwrI7LM9/8haFfVXgBlXrdHcdfEZxIv9CeWg5Q yolo@yoloctf.org
+The key's randomart image is:
++---[RSA 4096]----+
+|     .o.   .+=o*O|
+|     o.+   .Eo+=X|
+|. . + = .  ..o*=*|
+|oo . o . o. ...+o|
+|.o .    S.   .   |
+|  . . . ..       |
+|     + o .       |
+|    . o . .      |
+|       ...       |
++----[SHA256]-----+
+</code></pre>
+The private key file should only be readable by its owner.<br/>
+If needed do: chmod 600 id_rsa.
+<pre><code>vagrant@kali:/home/yolo/tmp$ ls -al
+total 16
+drwxrwxrwx  2 yolo      yolo   4096 Apr  4 13:24 .
+drwxr-xr-x 27 yolo 		yolo   4096 Apr  4 13:22 ..
+-rw-------  1 yolo      yolo   3381 Apr  4 13:24 id_rsa
+-rw-r--r--  1 yolo      yolo    742 Apr  4 13:24 id_rsa.pub
+</code></pre>
+Private key headers are easy to identify:
+<pre><code>$ cat id_rsa
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAACFwAAAAdzc2gtcn
+NhAAAAAwEAAQAAAgEA4hHFXkYNJLp47GZdP1LEJ3rueKhu4c9SCqzbeJfaWUJY/nZSmV76
+7KrJLvv/4Ve+Dm5bLwhJ9BkLessiIlGgx0ju+ghI7V+Ar+qAhir5chpVSGH4YIk0J8VDbJ
+...
+O9mUtgl8PKUd5AQL6sMM/FaYffu7+OFQkJzv3hxyiFEQPhsAo2K55cG8S0RWCX9Jp96U54
+lOXLj6MfGkfzuvvFS4pm9iTBrwKq8h7CubmNOnHe3TH3U/Mrzf6wq8MwAEpSeTWfnBGdRP
+tHOBQdCIQj3JAAAAEHlvbG9AeW9sb2N0Zi5vcmcBAg==
+-----END OPENSSH PRIVATE KEY-----
+</code></pre>
+Password protected Key header:
+<pre><code>$ cat id_rsa
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: 4,ENCRYPTED
+DEK-Info: AES-128-CBC,2AF25325A9B318F344B8391AFD767D6D
+
+NhAAAAAwEAAQAAAgEA4hHFXkYNJLp47GZdP1LEJ3rueKhu4c9SCqzbeJfaWUJY/nZSmV76
+</code></pre>
+
+
+Public key :
+<pre><code>$ cat id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQAxxxxx8/QoN3NBob3zs4l2mfZWkZNAtCHN2CpQ== yolo@yoloctf.org
+</code></pre>
+"
+
+
+[SSHIDRSADECHIFFRE]
+id=sshidrsadechiffre
+category=Shell
+keywords=
+title=SSH : "Enlever le mot de passe d'une clef chiffree"
+desc="
+Une fois le mot passe d'une clef privée trouvé avec John, il est possible de l'enlever pour se simplifier la vie.
+<pre><code>openssl rsa -in [id_rsa_sec] -out [id_rsa]
+</code></pre>
+"
+title_en=SSH : Remove private key password
+desc_en="
+Once the password of a private key found with John, it is possible to remove it for simplicity.
+<pre><code>openssl rsa -in [id_rsa_sec] -out [id_rsa]
+</code></pre>
+"
+
+[SSHIDRSAAUTH]
+id=sshidrsaauth
+category=Shell
+keywords=
+title="SSH : Authoriser l'authentification par clef privée"
+desc="
+Les clefs publiques permettant de se connecter en ssh sont listées, une clef par ligne, dans le fichier.
+<pre><code>~/.ssh/authorized_keys
+</code></pre>
+
+Une fois sur un compte utilisateur d'un serveur, injectez votre clef publique pour avoir un accès direct en ssh.
+<pre><code>echo 'ssh-rsa AAAAB3xxxxxxtCHN2CpQ== yolo@yoloctf.org' >> /home/victim/.ssh/authorized_keys
+</code></pre>
+Si le répertoire n'existe pas, il suffit de le créer:
+<pre><code>mkdir /home/victim/.ssh
+chmod 700 /home/victim/.ssh
+echo 'ssh-rsa AAAAB3xxxxxxtCHN2CpQ== yolo@yoloctf.org' >> /home/victim/.ssh/authorized_keys
+chmod 600 /home/victim/.ssh/authorized_keys
+</code></pre>
+Laissez tomber votre webshell, et revenez en ssh:
+<pre><code>ssh -i id_rsa_yolo victim@target.com
+</code></pre>
+"
+
+; eng 
+title_en="SSH : Allow private key authentication"
+desc_en="
+The public keys to connect in ssh are listed, one key per line, in the file.
+<pre><code>~/.ssh/authorized_keys
+</code></pre>
+
+Once on a user account of a server, inject your public key to have a direct access in ssh.
+<pre><code>echo 'ssh-rsa AAAAB3xxxxxxtCHN2CpQ== yolo@yoloctf.org' >> /home/victim/.ssh/authorized_keys
+</code></pre>
+If the directory does not exist, just create it:
+<pre><code>mkdir /home/victim/.ssh
+chmod 700 /home/victim/.ssh
+echo 'ssh-rsa AAAAB3xxxxxxtCHN2CpQ== yolo@yoloctf.org' >> /home/victim/.ssh/authorized_keys
+chmod 600 /home/victim/.ssh/authorized_keys
+</code></pre>
+Close your webshell, and come back in ssh:
+<pre><code>ssh -i id_rsa_yolo victim@target.com
+</code></pre>
+"
+
+
+

@@ -1,0 +1,1 @@
+cd www_site; php -S localhost:8888

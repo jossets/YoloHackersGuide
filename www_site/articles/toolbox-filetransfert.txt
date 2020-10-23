@@ -1,0 +1,89 @@
+﻿[Intro]
+id=intro
+category=transfert
+title=Transferts de fichiers
+title_en=File transferts
+desc="
+"
+
+
+[principe]
+id=principe
+category=transfert
+keywords=
+title=Principe
+desc="
+Dès l'instant ou vous arrivez à éxécuter des commandes sur votre cible, vous avez besoin de transférer des fichiers textes ou binaires. <br/>
+Vous allez certainement downloader des fichiers pour les analyser, ou uploader des outils tel des backdoors ou des scripts d'élévation de privilèges.
+"
+title_en=Principle
+desc_en="
+As soon as you get your initial foothold on the target server, your next step is to transfert text or binary files. <br/>
+You'll probably download some target files and upload some tools such as backdoors or privilege escalation scripts...
+"
+
+[base64]
+id=base64
+category=transfert
+keywords=
+title=Copier/Coller en Base64
+desc="
+Un encodage en base64 permet de faire des copier/coller de fichiers sans se soucier du binaire ou des retours à la ligne
+<pre><code>cat file | base64
+printf 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' | base64 -d > file
+</code></pre>
+Préparez la dernière commande dans votre terminal, elle peut être assez longue, puis copiez/collez là dans votre cible.
+"
+title_en=Base64 Copy/Paste
+desc_en="
+Base64 encoding is the simplest way to upload small binary or text files.
+<pre><code>cat file | base64
+printf 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' | base64 -d > file
+</code></pre>
+Just prepare the last command on you xterm, it can be many lines long, then copy/paste/exec on you target.
+"
+
+[http]
+id=http
+category=transfert
+keywords=
+title=Transfert de fichier en lançant un serveur HTTP Server
+desc="
+Pour transférer un fichier sans se soucier de sa taille, lancer un serveur HTTP et faire un wget, curl
+<pre><code>python -m SimpleHTTPServer 8000
+php -S 0.0.0.0:8000 
+</code></pre>
+Attention, ce nouveau serveur permet à tout le monde de lire l'intégralité de son système de fichier.
+"
+title_en=File transfert with HTTP Server
+desc_en="
+To transfer a file without worrying about its size, just launch an HTTP server and make a wget, curl
+<pre><code>python -m SimpleHTTPServer 8000
+php -S 0.0.0.0:8000
+</code></pre>
+Be carefull, eveyone is able to browse this new server file system.
+"
+
+
+[scp]
+id=http
+category=transfert
+keywords=
+title=Transfert avec un accès ssh
+desc="
+Si vous avez un accès ssh
+<pre><code>scp file.txt remote_username@10.10.0.2:/remote/directory
+scp -i id_rsa file.txt remote_username@10.10.0.2:/remote/directory
+scp -P 2222 file.txt remote_username@10.10.0.2:/remote/directory
+scp remote_username@10.10.0.2:/remote/file.txt /local/directory
+</code></pre>
+"
+title_en=Transfert with ssh account
+desc_en="
+With an ssh accès, let use scp
+<pre><code>scp file.txt remote_username@10.10.0.2:/remote/directory
+scp -i id_rsa file.txt remote_username@10.10.0.2:/remote/directory
+scp -P 2222 file.txt remote_username@10.10.0.2:/remote/directory
+scp remote_username@10.10.0.2:/remote/file.txt /local/directory
+</code></pre>
+"

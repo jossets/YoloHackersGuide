@@ -1,0 +1,56 @@
+[Intro]
+id=intro
+category=Acteurs
+title=Acteurs
+title_en=Actors
+desc="
+"
+
+[OWASP]
+id=owasp
+category=Acteurs
+keywords=
+title=OWASP
+desc="
+L'Open Web Application Security Project (OWASP) est une communauté, fondée en 2001, qui produit et met gratuitement à disposition des articles, méthodologies, outils...<br/>
+Elle publie tous les ans le Top 10 des failles de sécurités Web.<br/>
+Elle publie l'OWASP Testing Guide : un guide des best practices depentesting.<br/>
+Elle publie l'OWASP Development Guide: un guide visant à écrire du code sans failles de sécurité.<br/>
+<a href='https://www.owasp.org'>Site officiel: https://www.owasp.org</a>
+"
+desc_en="
+The Open Web Application Security Project (OWASP) is a community, founded in 2001, which produces and makes available for free articles, methodologies, tools...<br/>
+Every year, it publishes the Top 10 Web security vulnerabilities.
+It publishes the OWASP Testing Guide: a guide to best practices in depentesting.<br/>
+It publishes the OWASP Development Guide: a guide to writing code without security holes.
+<a href='https://www.owasp.org'>Official website: https://www.owasp.org</a>
+"
+
+[Mitre]
+id=mitre
+category=Acteurs
+keywords=
+title=MITRE Corporation
+desc="
+Mitre est l'organisation, financée par la Défense des Etats unis, qui a mis en place et maintient le référencement des CVE:  Common Vulnerabilities and Exposures) <br/>
+<a href='https://en.wikipedia.org/wiki/Mitre_Corporation'>https://en.wikipedia.org/wiki/Mitre_Corporation</a>
+"
+desc_en="
+Mitre is the organization, funded by the United States Defense Department, which has implemented and maintains the CVE referencing (Common Vulnerabilities and Exposures).
+<a href='https://en.wikipedia.org/wiki/Mitre_Corporation'>https://en.wikipedia.org/wiki/Mitre_Corporation</a>
+"
+
+
+[CVE]
+id=cve
+category=Acteurs
+keywords=
+title=CVE
+desc="
+Une CVE, pour Common Vulnerabilities and Exposures, est une référence pour une faille de sécurité.<br/>
+<a href='https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures'>https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures</a>
+"
+desc_en="
+A CVE, for Common Vulnerabilities and Exposures, is a reference for a security flaw.<br/>
+<a href='https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures'>https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures</a>
+"

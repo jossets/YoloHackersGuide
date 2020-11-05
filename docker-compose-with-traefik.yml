@@ -21,9 +21,9 @@ services:
       - "traefik.enable=true"
       - "traefik.frontend.rule=PathPrefix:/hackersguide/;ReplacePathRegex: ^/hackersguide/(.*) /$$1"
       - "traefik.port=80"
-      - "traefik.docker.network=webserver_webLAN"
+      - "traefik.docker.network=traefik_lan"
     networks:
-      - webserver_webLAN
+      - traefik_lan
       - hackersguide_LAN
 
   hackersguide_www_php:
@@ -38,7 +38,7 @@ services:
       - hackersguide_LAN
 
 networks:
-  webserver_webLAN:
+  traefik_lan:
     external: true
   hackersguide_LAN:
     driver: bridge

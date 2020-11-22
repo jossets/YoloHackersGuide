@@ -497,6 +497,7 @@ desc="
 	  <textarea id='MorseEncodeIn' rows = '5' class='col-5' name = 'description' onKeyUp='onMorseEncode()' onChange='onMorseEncode()'></textarea>
 	  <textarea readonly id='MorseEncodeOut' rows = '5' class='col-5' name = 'description' ></textarea>
 	</div>
+
 	<script>
     var alphabet_morse = {
         'a': '.-',    'b': '-...',  'c': '-.-.', 'd': '-..',
@@ -556,6 +557,9 @@ desc="
 	}
 	</script>
 </div>	
+<div>
+Veuillez noter que les majuscules sont perdues lors de l'encodage.
+</div>
 "
 title_en="Morse Code"
 desc_en="
@@ -626,6 +630,9 @@ desc_en="
 	}
 	</script>
 </div>	
+ <div>
+    Be careful, capital letters are lost during encoding.
+    </div>
 "
 
 

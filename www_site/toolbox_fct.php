@@ -76,6 +76,7 @@
 
     function print_content() {
         global $exploit_files;
+        global $LANG;
         foreach ($exploit_files as $filename) {
             $to_print=null;
             $exploits = parse_ini_file($filename, true);
@@ -160,6 +161,7 @@
 
     function print_menu_entries() {
         global $exploit_files;
+        global $LANG;
         foreach ($exploit_files as $filename) {
             $exploits = parse_ini_file($filename, true);
             if ($exploits['Intro'] ) {

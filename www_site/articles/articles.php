@@ -12,6 +12,7 @@ $exploit_files[] = "articles/toolbox-sqli.txt";
 $exploit_files[] = "articles/toolbox-webshell.txt";
 $exploit_files[] = "articles/toolbox-filetransfert.txt";
 $exploit_files[] = "articles/toolbox-privesc_ux.txt";
+$exploit_files[] = "articles/toolbox-forensic.txt";
 $exploit_files[] = "articles/toolbox-actors.txt";
 $exploit_files[] = "articles/toolbox-encode.txt";
 

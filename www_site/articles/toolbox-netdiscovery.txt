@@ -147,6 +147,91 @@ http://www.0daysecurity.com/penetration-testing/enumeration.html
 "
 
 
+
+
+[21FtpAnonymous]
+id=21FtpAnonymous
+category=NetworkDiscovery
+keywords=
+title=21: FTP - Anonymous
+desc="
+Les serveurs ftp permettent de transférer des fichiers.  
+Une fois connecté avec un login/password, il est possible de se déplacer dans l'arborescence des répertoire pour  d'uploader/downloader des fichiers.   
+Par défaut, le protocole est optimisé pour les fichiers textes. Ne pas oublier d'activer le mode binaire si nécessaire.   
+Un compte invité, ou anonymous permet sur certain serveur de télécharger librement des documents publics.   
+Le login est 'anonymous', le mot de passe est par convention le mail de l'invité.   
+<pre><code>$ ftp 10.0.0.11
+Name (10.0.0.11:yolo): anonymous
+Password: yolo@yolospacehacker.com
+ftp> pwd 
+ftp> cd docs
+ftp> ls 
+ftp> bin
+ftp> get flag.txt
+ftp> put backdoor.php
+ftp> bye
+</code></pre>
+"
+
+title_en=21: FTP - Anonymous
+desc_en="
+Ftp servers are used to transfer files.  
+Once logged in with a login/password, it is possible to move through the directory tree to upload/download files.    
+By default, the protocol is optimised for text files. Do not forget to activate the binary mode if necessary.   
+A guest or anonymous account allows on certain servers to freely download public documents.   
+The login is 'anonymous', the password is conventionally the guest's email.   
+<pre><code>$ ftp 10.0.0.11
+Name (10.0.0.11:yolo): anonymous
+Password: yolo@yolospacehacker.com
+ftp> pwd 
+ftp> cd docs
+ftp> ls 
+ftp> bin
+ftp> get flag.txt
+ftp> put backdoor.php
+ftp> bye
+</code></pre>
+"
+
+
+
+[22Ssh]
+id=22Ssh
+category=NetworkDiscovery
+keywords=
+title=22: Ssh
+desc="
+Le port 22 est le port ssh, qui permet l'accès distant à un terminal.   
+Il est possible de se connecter avec un login/password.
+<pre><code>$ ssh yolo@10.0.0.11
+</code></pre>
+
+Il est aussi possible de se connecter avec un fichier de clef privé.    
+<pre><code>$ ssh -i id_rsa yolo@10.0.0.11
+</code></pre>
+Le fichier de clef privée ne doit être en lecture que par son propriétaire.   
+<pre><code>$ chmod 600 id_rsa
+</code></pre>
+"
+
+title_en=22: Ssh
+desc_en="
+22 is the ssh port, which allows remote access to a terminal.   
+It is possible to connect with a login/password.
+<pre><code>$ ssh yolo@10.0.0.11
+</code></pre>
+
+It is also possible to log in with a private key file.    
+<pre><code>$ ssh -i id_rsa yolo@10.0.0.11
+</code></pre>
+The private key file should only be read by its owner.     
+<pre><code>$ chmod 600 id_rsa
+</code></pre>
+"
+
+
+
+
 [80HTTProbots]
 id=80HTTProbots
 category=NetworkDiscovery
@@ -247,6 +332,11 @@ Lancer un scan rapide avec dirb, qui va utiliser sa liste 'common.txt':
 <pre><code>dirb 10.10.10.11
 </code></pre>
 <br/>
+Rechercher les fichiers avec l'extension .php:
+<pre><code>dirb 10.10.10.11  -X .php
+</code></pre>
+<br/>
+
 
 <h5>Gobuster</h5>
 <pre><code>https://github.com/OJ/gobuster
@@ -301,6 +391,10 @@ Dirb is usually preinstalled on Kali or Parrot. If not:
 Run a quick scan with dirb, which its default 'common.txt' list:
 <pre><code>dirb 10.10.10.11
 </code></pre>
+
+Find files with .php file extension:
+<pre><code>dirb 10.10.10.11  -X .php
+</code></pre>
 <br/>
 
 <h5>Gobuster</h5>
@@ -335,7 +429,7 @@ desc="
 <h5>Hydra</h5>
 <pre><code>hydra -l admin -P /usr/share/wordlists/rockyou.txt  -f 10.10.10.157 http-get /monitoring
 </code></pre>
-<pre><code>-p login 
+<pre><code>-l login 
 -P password file 
 -f server adress
 http-get : HTTP request type
@@ -347,7 +441,7 @@ desc_en="
 <h5>Hydra</h5>
 <pre><code>hydra -l admin -P /usr/share/wordlists/rockyou.txt  -f 10.10.10.157 http-get /monitoring
 </code></pre>
-<pre><code>-p login 
+<pre><code>-l login 
 -P password file 
 -f server adress
 http-get : HTTP request type
@@ -489,6 +583,7 @@ Dumper le contenu de la base.
 use DATABASE;
 show tables;    -- Liste les tables
 SELECT * FROM TABLENAME;
+quit;
 </code></pre>
 "
 ; eng
@@ -509,6 +604,7 @@ Select the aplication database, list tables, then dump interresting tables such 
 <pre><code>use DATABASE;
 show tables;     
 SELECT * FROM TABLENAME;
+quit;
 </code></pre>
 "
 

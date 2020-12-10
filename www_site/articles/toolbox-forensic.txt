@@ -1,0 +1,118 @@
+#
+# 
+# 
+#
+
+[Intro]
+id=intro
+category=Forensic
+title=Forensic
+title_en="Forensic"
+desc="
+"
+
+
+
+[zip]
+id=zip
+category=Forensic
+keywords=
+title=Zip chiffré
+title_en="Encrypted Zip"
+desc="
+Cracker un zip chiffré avec une liste de mots de passe   
+````
+fcrackzip -u -v -D -p rockyou.txt secret.zip
+````
+"
+desc_en="
+Brute force an encrypted zip with a list of passwords
+````
+fcrackzip -u -v -D -p rockyou.txt secret.zip
+````
+"
+
+
+
+
+[mdb]
+id=mdb
+category=Forensic
+keywords=
+title=Mdb - Microsoft Access Database
+title_en=Mdb - Microsoft Access Database
+desc="
+Vérification du format du fichier:
+````
+$ file backup.mdb
+backup.mdb: Microsoft Access Database
+````
+Si besoin, installer les outils:
+````
+apt-get install mdbtools
+````
+Lister les tables, et les dumper.
+````
+mdb-tables backup.mdb 
+mdb-export backup.mdp  users passwd
+````
+"
+
+desc_en="
+Check file format:
+````
+$ file backup.mdb
+backup.mdb: Microsoft Access Database
+````
+If needed,install tools:
+````
+apt-get install mdbtools
+````
+List tables, then dump.
+````
+mdb-tables backup.mdb 
+mdb-export backup.mdp  users passwd
+````
+"
+
+
+
+[pst]
+id=pst
+category=Forensic
+keywords=
+title=Pst - Outlook email file
+title_en=Pst - Outlook email file
+desc="
+Vérification du format du fichier:
+````
+$ file mails.pst
+mails.pst: Microsoft Outlook email folder
+````
+Si besoin, installer les outils:
+````
+apt-get install pst-utils
+````
+Extraire les boites mails, et les lire.
+````
+readpst mails.pst 
+cat mails.mbox
+````
+"
+
+desc_en="
+Check file format:
+````
+$ file mails.pst
+mails.pst: Microsoft Outlook email folder
+````
+If needed,install tools:
+````
+apt-get install pst-utils
+````
+Extract mailboxes, then read them.
+````
+readpst mails.pst 
+cat mails.mbox
+````
+"

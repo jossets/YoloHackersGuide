@@ -361,7 +361,7 @@ Pour une url en HTTPS, ajouter l'option de ligne de commande
 ; Eng
 title_en=80: HTTP - Directory and files bruteforce
 desc_en="
-Bruteforcer a website consists in testing the presence of accessible pages, such as /register, /register.php, /admin, /upload, /users/login.txt, /admin/password.sav, ...
+Bruteforcing a website consists in testing the presence of accessible pages, such as /register, /register.php, /admin, /upload, /users/login.txt, /admin/password.sav, ...
 For this there are lists of directories and filenames frequently found on web servers.<br/>
 <br/>
 Once web server langage/framework is known (php, java, cgi / wordpress, joomla, ...), it is possible to use optimized lists, and search only the appropriate extensions.: php, php4, php5, exe, jsp, ...<br/>
@@ -388,7 +388,7 @@ It is crucial to choose the right list of directories/filenames:
 Dirb is usually preinstalled on Kali or Parrot. If not:
 <pre><code>sudo apt-get install -y dirb
 </code></pre>
-Run a quick scan with dirb, which its default 'common.txt' list:
+Run a quick scan with dirb, whith its default 'common.txt' list:
 <pre><code>dirb 10.10.10.11
 </code></pre>
 

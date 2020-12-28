@@ -27,7 +27,7 @@ A la réception de cette requête, le serveur va inclure le fichier 'login.php',
 Nous allons remplacer 'login.php' par le nom d'un autre fichier, par exemple '/etc/passwd'.<br/>
 
 ```
-http://10.10.10.11/index.php?page=/etc/password
+http://10.10.10.11/index.php?page=/etc/passwd
 ```
 "
 title_en=LFI
@@ -41,7 +41,7 @@ The server receive the request extract the page field 'login.php' and process th
  
 Let replace 'login.php' by another file such as '/etc/passwd', that will be processed by php.
 ```
-http://10.10.10.11/index.php?page=/etc/password
+http://10.10.10.11/index.php?page=/etc/passwd
 ```
 Php commands are enclosed between &lt;?php and ?> tags. When parsing a file without those tags, php simply print the file content.
 "

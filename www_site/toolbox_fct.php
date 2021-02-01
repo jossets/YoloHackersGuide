@@ -56,7 +56,11 @@
         $hint_entries[]="hint_4";
         $hint_entries[]="hint_5";
         $hint_entries[]="hint_6";
-
+		$hint_entries[]="hint_7";
+		$hint_entries[]="hint_8";
+		$hint_entries[]="hint_9";
+		$hint_entries[]="hint_10";
+		
               // Hints   
         foreach ($hint_entries as $hint_entry) {
           if ($exploit[$hint_entry]) {

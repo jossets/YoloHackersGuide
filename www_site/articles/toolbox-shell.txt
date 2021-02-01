@@ -146,7 +146,7 @@ category=Shell
 keywords=
 title=SSH
 desc="
-Les connections aux serveurs se font en ssh.<br/>
+Les connexions aux serveurs se font en ssh.<br/>
 Soit avec un login/password
 <pre><code>ssh user@hostname
 </code></pre>

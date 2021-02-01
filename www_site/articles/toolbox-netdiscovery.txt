@@ -329,11 +329,11 @@ Dirb est préinstallé sur Kali ou Parrot. Si ce n'est pas le cas:
 <pre><code>sudo apt-get install -y dirb
 </code></pre>
 Lancer un scan rapide avec dirb, qui va utiliser sa liste 'common.txt':
-<pre><code>dirb 10.10.10.11
+<pre><code>dirb http://10.10.10.11
 </code></pre>
 <br/>
 Rechercher les fichiers avec l'extension .php:
-<pre><code>dirb 10.10.10.11  -X .php
+<pre><code>dirb http://10.10.10.11  -X .php
 </code></pre>
 <br/>
 
@@ -389,11 +389,11 @@ Dirb is usually preinstalled on Kali or Parrot. If not:
 <pre><code>sudo apt-get install -y dirb
 </code></pre>
 Run a quick scan with dirb, whith its default 'common.txt' list:
-<pre><code>dirb 10.10.10.11
+<pre><code>dirb http://10.10.10.11
 </code></pre>
 
 Find files with .php file extension:
-<pre><code>dirb 10.10.10.11  -X .php
+<pre><code>dirb http://10.10.10.11  -X .php
 </code></pre>
 <br/>
 
@@ -519,7 +519,7 @@ wordpress/htdocs/wp-config.php
 <h5>Wpscan</h5>
 Wpscan connait la structure d'un site wordpress et va faire du brute force pour identifier les pages, le posts, les users, le thème, les plugins.<br/>
 Les failles de wordpress viennent essentiellement des plugins non mis à jour. 
-<pre><code>wpscan --url http:10.10.10.10/wordpress/ -e
+<pre><code>wpscan --url http://10.10.10.10/wordpress/ -e
 --url : url de la page wordpress.
 -e : énumeration
 </code></pre>
@@ -551,7 +551,7 @@ wordpress/htdocs/wp-config.php
 <h5>Wpscan</h5>
 Wpscan knows the structure of a wordpress site and will make brute force to identify the pages, the posts, the users, the theme, the plugins.<br/>
 Wordpress flaws are mainly due to non-updated plugins. 
-<pre><code>wpscan --url http:10.10.10.10/wordpress/ -e
+<pre><code>wpscan --url http://10.10.10.10/wordpress/ -e
 --url : wordpress url
 -e : enum pages, posts, users, theme, plugins, ...
 </code></pre>

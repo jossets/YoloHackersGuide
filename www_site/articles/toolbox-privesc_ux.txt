@@ -291,9 +291,34 @@ Reference: https://gtfobins.github.io/
 "
 
 
+[less]
+id=less
+category=PrivEscUx
+keywords=
+title="Sudo/SUID bit - less"
+desc="
+Less peut être utilisé pour lire des fichiers. Presser q pour sortir du lecteur.
+<pre><code>./less flag.txt
+</code></pre>
+ou pour obtenir un shell en ouvrant un fichier, et une fois dans le lecteur ouvrir un shell en tapant !/bin/sh
+<pre><code>./less fichier
+!/bin/sh
+</code></pre>
+"
+title_en="Sudo/SUID bit - less"
+desc_en="
+Less is used to read files. Press q to exit.
+<pre><code>./less flag.txt
+</code></pre>
+To open a shell, open a file, then !/bin/sh
+<pre><code>./less fichier
+!/bin/sh
+</code></pre>
+"
+
 
 [bash]
-id=bash
+id=privbash
 category=PrivEscUx
 keywords=
 title="Sudo/SUID bit - bash"

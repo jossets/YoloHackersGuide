@@ -122,7 +122,7 @@ ___Privileges Elevation___
 Switch from an account with low privileges, such as a web server, to an administrator account.   
 Shell knowledge: cd, file system, user rights, config file, sbit, sudo, ...   
 [-> Shell commands](?cat=Shell)   
-[-> File transfer](?cat=transfer)   
+[-> File transfer](?cat=transfert)   
 [-> Privilege elevation on Linux](?cat=PrivEscUx)   
 
 ___Maintaining Access and Cleaning___       

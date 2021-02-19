@@ -47,6 +47,29 @@ Send the Form with custom params thanks to curl:
 </code></pre>
 "
  
+[sqli-fun]
+id=sqli-fun
+category=sqli
+keywords=
+title=Les Exploits de maman
+desc="
+<img src='https://imgs.xkcd.com/comics/exploits_of_a_mom.png'> 
+- Bonjour, c'est l'école de votre fils. Nous avons des petits soucis informatiques.
+- A-t-il cassé quelque chose ?
+- D'une certaine manière
+- Avez vous réellement donné comme prénom à votre fils: Robert'); DROP TABLE Students; -- ?
+- Oh, oui, on le surnomme notre petit Bobby Tables
+- Nous venons de perdre l'intégralité des données sur les étudiants. J'espère que vous êtes satisfaite.
+- Et moi j'espère que vous avez appris à filtrer vos données utilisateurs
+
+
+"
+title_en=Exploits of a mom
+desc_en="
+<img src='https://imgs.xkcd.com/comics/exploits_of_a_mom.png'> 
+" 
+ 
+ 
 [sql - mysql]
 id=sql-mysql
 category=sqli

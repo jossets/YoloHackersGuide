@@ -31,7 +31,7 @@
     <script src="js/bootstrap.min.js"></script>
 */ ?>
     <link rel="stylesheet" href="style.css">
-
+	<link rel="stylesheet" href="../style.css">
     
     <?php 
     //

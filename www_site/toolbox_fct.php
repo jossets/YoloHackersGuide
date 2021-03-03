@@ -56,7 +56,11 @@
         $hint_entries[]="hint_4";
         $hint_entries[]="hint_5";
         $hint_entries[]="hint_6";
-
+		$hint_entries[]="hint_7";
+		$hint_entries[]="hint_8";
+		$hint_entries[]="hint_9";
+		$hint_entries[]="hint_10";
+		
               // Hints   
         foreach ($hint_entries as $hint_entry) {
           if ($exploit[$hint_entry]) {
@@ -76,6 +80,7 @@
 
     function print_content() {
         global $exploit_files;
+        global $LANG;
         foreach ($exploit_files as $filename) {
             $to_print=null;
             $exploits = parse_ini_file($filename, true);
@@ -160,6 +165,7 @@
 
     function print_menu_entries() {
         global $exploit_files;
+        global $LANG;
         foreach ($exploit_files as $filename) {
             $exploits = parse_ini_file($filename, true);
             if ($exploits['Intro'] ) {

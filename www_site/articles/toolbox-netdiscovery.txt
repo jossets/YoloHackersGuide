@@ -147,6 +147,91 @@ http://www.0daysecurity.com/penetration-testing/enumeration.html
 "
 
 
+
+
+[21FtpAnonymous]
+id=21FtpAnonymous
+category=NetworkDiscovery
+keywords=
+title=21: FTP - Anonymous
+desc="
+Les serveurs ftp permettent de transférer des fichiers.  
+Une fois connecté avec un login/password, il est possible de se déplacer dans l'arborescence des répertoire pour  d'uploader/downloader des fichiers.   
+Par défaut, le protocole est optimisé pour les fichiers textes. Ne pas oublier d'activer le mode binaire si nécessaire.   
+Un compte invité, ou anonymous permet sur certain serveur de télécharger librement des documents publics.   
+Le login est 'anonymous', le mot de passe est par convention le mail de l'invité.   
+<pre><code>$ ftp 10.0.0.11
+Name (10.0.0.11:yolo): anonymous
+Password: yolo@yolospacehacker.com
+ftp> pwd 
+ftp> cd docs
+ftp> ls 
+ftp> bin
+ftp> get flag.txt
+ftp> put backdoor.php
+ftp> bye
+</code></pre>
+"
+
+title_en=21: FTP - Anonymous
+desc_en="
+Ftp servers are used to transfer files.  
+Once logged in with a login/password, it is possible to move through the directory tree to upload/download files.    
+By default, the protocol is optimised for text files. Do not forget to activate the binary mode if necessary.   
+A guest or anonymous account allows on certain servers to freely download public documents.   
+The login is 'anonymous', the password is conventionally the guest's email.   
+<pre><code>$ ftp 10.0.0.11
+Name (10.0.0.11:yolo): anonymous
+Password: yolo@yolospacehacker.com
+ftp> pwd 
+ftp> cd docs
+ftp> ls 
+ftp> bin
+ftp> get flag.txt
+ftp> put backdoor.php
+ftp> bye
+</code></pre>
+"
+
+
+
+[22Ssh]
+id=22Ssh
+category=NetworkDiscovery
+keywords=
+title=22: Ssh
+desc="
+Le port 22 est le port ssh, qui permet l'accès distant à un terminal.   
+Il est possible de se connecter avec un login/password.
+<pre><code>$ ssh yolo@10.0.0.11
+</code></pre>
+
+Il est aussi possible de se connecter avec un fichier de clef privé.    
+<pre><code>$ ssh -i id_rsa yolo@10.0.0.11
+</code></pre>
+Le fichier de clef privée ne doit être en lecture que par son propriétaire.   
+<pre><code>$ chmod 600 id_rsa
+</code></pre>
+"
+
+title_en=22: Ssh
+desc_en="
+22 is the ssh port, which allows remote access to a terminal.   
+It is possible to connect with a login/password.
+<pre><code>$ ssh yolo@10.0.0.11
+</code></pre>
+
+It is also possible to log in with a private key file.    
+<pre><code>$ ssh -i id_rsa yolo@10.0.0.11
+</code></pre>
+The private key file should only be read by its owner.     
+<pre><code>$ chmod 600 id_rsa
+</code></pre>
+"
+
+
+
+
 [80HTTProbots]
 id=80HTTProbots
 category=NetworkDiscovery
@@ -244,9 +329,14 @@ Dirb est préinstallé sur Kali ou Parrot. Si ce n'est pas le cas:
 <pre><code>sudo apt-get install -y dirb
 </code></pre>
 Lancer un scan rapide avec dirb, qui va utiliser sa liste 'common.txt':
-<pre><code>dirb 10.10.10.11
+<pre><code>dirb http://10.10.10.11
 </code></pre>
 <br/>
+Rechercher les fichiers avec l'extension .php:
+<pre><code>dirb http://10.10.10.11  -X .php
+</code></pre>
+<br/>
+
 
 <h5>Gobuster</h5>
 <pre><code>https://github.com/OJ/gobuster
@@ -271,7 +361,7 @@ Pour une url en HTTPS, ajouter l'option de ligne de commande
 ; Eng
 title_en=80: HTTP - Directory and files bruteforce
 desc_en="
-Bruteforcer a website consists in testing the presence of accessible pages, such as /register, /register.php, /admin, /upload, /users/login.txt, /admin/password.sav, ...
+Bruteforcing a website consists in testing the presence of accessible pages, such as /register, /register.php, /admin, /upload, /users/login.txt, /admin/password.sav, ...
 For this there are lists of directories and filenames frequently found on web servers.<br/>
 <br/>
 Once web server langage/framework is known (php, java, cgi / wordpress, joomla, ...), it is possible to use optimized lists, and search only the appropriate extensions.: php, php4, php5, exe, jsp, ...<br/>
@@ -298,8 +388,12 @@ It is crucial to choose the right list of directories/filenames:
 Dirb is usually preinstalled on Kali or Parrot. If not:
 <pre><code>sudo apt-get install -y dirb
 </code></pre>
-Run a quick scan with dirb, which its default 'common.txt' list:
-<pre><code>dirb 10.10.10.11
+Run a quick scan with dirb, whith its default 'common.txt' list:
+<pre><code>dirb http://10.10.10.11
+</code></pre>
+
+Find files with .php file extension:
+<pre><code>dirb http://10.10.10.11  -X .php
 </code></pre>
 <br/>
 
@@ -335,7 +429,7 @@ desc="
 <h5>Hydra</h5>
 <pre><code>hydra -l admin -P /usr/share/wordlists/rockyou.txt  -f 10.10.10.157 http-get /monitoring
 </code></pre>
-<pre><code>-p login 
+<pre><code>-l login 
 -P password file 
 -f server adress
 http-get : HTTP request type
@@ -347,7 +441,7 @@ desc_en="
 <h5>Hydra</h5>
 <pre><code>hydra -l admin -P /usr/share/wordlists/rockyou.txt  -f 10.10.10.157 http-get /monitoring
 </code></pre>
-<pre><code>-p login 
+<pre><code>-l login 
 -P password file 
 -f server adress
 http-get : HTTP request type
@@ -425,7 +519,7 @@ wordpress/htdocs/wp-config.php
 <h5>Wpscan</h5>
 Wpscan connait la structure d'un site wordpress et va faire du brute force pour identifier les pages, le posts, les users, le thème, les plugins.<br/>
 Les failles de wordpress viennent essentiellement des plugins non mis à jour. 
-<pre><code>wpscan --url http:10.10.10.10/wordpress/ -e
+<pre><code>wpscan --url http://10.10.10.10/wordpress/ -e
 --url : url de la page wordpress.
 -e : énumeration
 </code></pre>
@@ -457,7 +551,7 @@ wordpress/htdocs/wp-config.php
 <h5>Wpscan</h5>
 Wpscan knows the structure of a wordpress site and will make brute force to identify the pages, the posts, the users, the theme, the plugins.<br/>
 Wordpress flaws are mainly due to non-updated plugins. 
-<pre><code>wpscan --url http:10.10.10.10/wordpress/ -e
+<pre><code>wpscan --url http://10.10.10.10/wordpress/ -e
 --url : wordpress url
 -e : enum pages, posts, users, theme, plugins, ...
 </code></pre>
@@ -489,6 +583,7 @@ Dumper le contenu de la base.
 use DATABASE;
 show tables;    -- Liste les tables
 SELECT * FROM TABLENAME;
+quit;
 </code></pre>
 "
 ; eng
@@ -509,6 +604,7 @@ Select the aplication database, list tables, then dump interresting tables such 
 <pre><code>use DATABASE;
 show tables;     
 SELECT * FROM TABLENAME;
+quit;
 </code></pre>
 "
 

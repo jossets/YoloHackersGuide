@@ -152,7 +152,7 @@ Filtre sur cat et /etc/passwd
 </code></pre> 
 "   
 desc_en="
-A keyword based filter is easy to bypass using simple quote, double quote, backslash et slash
+A keyword based filter is easy to bypass using simple quote, double quote, backslash and slash
 <pre><code>c'a't /etc/passwd
 c"a"t /etc/passwd
 c\at /etc/passwd

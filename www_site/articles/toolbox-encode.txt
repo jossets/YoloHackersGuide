@@ -491,18 +491,13 @@ keywords=
 title="Code Morse"
 desc="
  <br/>
-
-"
-title_en="Morse Code"
-desc_en="
-<br/>
-
 <div class=''>
 	<div class='form-group text-left row'>
       <label  for='usr' class='col-12'>Text to encode</label>
 	  <textarea id='MorseEncodeIn' rows = '5' class='col-5' name = 'description' onKeyUp='onMorseEncode()' onChange='onMorseEncode()'></textarea>
 	  <textarea readonly id='MorseEncodeOut' rows = '5' class='col-5' name = 'description' ></textarea>
 	</div>
+
 	<script>
     var alphabet_morse = {
         'a': '.-',    'b': '-...',  'c': '-.-.', 'd': '-..',
@@ -511,7 +506,8 @@ desc_en="
         'm': '--',    'n': '-.',    'o': '---',  'p': '.--.',
         'q': '--.-',  'r': '.-.',   's': '...',  't': '-',
         'u': '..-',   'v': '...-',  'w': '.--',  'x': '-..-',
-        'y': '-.--',  'z': '--..',  ' ': '/',
+        'y': '-.--',  'z': '--..',  
+        ' ': '/',     '_': '..--.-',
         '1': '.----', '2': '..---', '3': '...--', '4': '....-', 
         '5': '.....', '6': '-....', '7': '--...', '8': '---..', 
         '9': '----.', '0': '-----', 
@@ -539,7 +535,7 @@ desc_en="
 	</div>
 
 	<script>
-    var MORSE_CODE = {'.-': 'a', '-...':'b', '-.-.': 'c', '-..': 'd', '.':'e', '..-.':'f', '--.':'g', '....':'h', '..':'i', '.---':'j', '-.-':'k', '.-..':'l', '--':'m', '-.':'n', '---':'o', '.--.':'p', '--.-':'q', '.-.':'r', '...':'s', '-':'t', '..-':'u', '...-':'v', '.--':'w', '-..-':'x', '-.--':'y', '--..':'z', '.----':'1', '..---':'2', '...--':'3', '....-':'4', '.....':'5', '-....':'6', '--...':'7', '---..':'8', '----.':'9', '-----':'0', '|':' '};
+    var MORSE_CODE = {'.-': 'a', '-...':'b', '-.-.': 'c', '-..': 'd', '.':'e', '..-.':'f', '--.':'g', '....':'h', '..':'i', '.---':'j', '-.-':'k', '.-..':'l', '--':'m', '-.':'n', '---':'o', '.--.':'p', '--.-':'q', '.-.':'r', '...':'s', '-':'t', '..-':'u', '...-':'v', '.--':'w', '-..-':'x', '-.--':'y', '--..':'z', '.----':'1', '..---':'2', '...--':'3', '....-':'4', '.....':'5', '-....':'6', '--...':'7', '---..':'8', '----.':'9', '-----':'0', '|':' ', '..--.-':'_'};
 
     var decodeMorse = function(morseCode){
       var words = (morseCode).split('  ');
@@ -550,7 +546,7 @@ desc_en="
         decoded[i] = [];
         for(var x = 0; x < letters[i].length; x++){
             if(MORSE_CODE[letters[i][x]]){
-                decoded[i].push( MORSE_CODE[letters[i][x]] );
+                decoded[i].push( MORSE_CODE[letters[i][x]].toUpperCase() );
             }
         }
       }
@@ -562,6 +558,83 @@ desc_en="
 	}
 	</script>
 </div>	
+<div>
+Veuillez noter que les majuscules sont perdues lors de l'encodage.
+</div>
+"
+title_en="Morse Code"
+desc_en="
+<br/>
+
+<div class=''>
+	<div class='form-group text-left row'>
+      <label  for='usr' class='col-12'>Text to encode</label>
+	  <textarea id='MorseEncodeIn' rows = '5' class='col-5' name = 'description' onKeyUp='onMorseEncode()' onChange='onMorseEncode()'></textarea>
+	  <textarea readonly id='MorseEncodeOut' rows = '5' class='col-5' name = 'description' ></textarea>
+	</div>
+	<script>
+    var alphabet_morse = {
+        'a': '.-',    'b': '-...',  'c': '-.-.', 'd': '-..',
+        'e': '.',     'f': '..-.',  'g': '--.',  'h': '....',
+        'i': '..',    'j': '.---',  'k': '-.-',  'l': '.-..',
+        'm': '--',    'n': '-.',    'o': '---',  'p': '.--.',
+        'q': '--.-',  'r': '.-.',   's': '...',  't': '-',
+        'u': '..-',   'v': '...-',  'w': '.--',  'x': '-..-',
+        'y': '-.--',  'z': '--..',  
+        ' ': '/',     '_': '..--.-',
+        '1': '.----', '2': '..---', '3': '...--', '4': '....-', 
+        '5': '.....', '6': '-....', '7': '--...', '8': '---..', 
+        '9': '----.', '0': '-----', 
+    };
+    function stringToMorse(txt) {
+        var morse = txt.split('')            // Transform the string into an array: ['T', 'h', 'i', 's'...
+        .map(function(e){     // Replace each character with a morse "letter"
+            return alphabet_morse[e.toLowerCase()] || ''; // Lowercase only, ignore unknown characters.
+        })
+        .join(' ')            // Convert the array back to a string.
+        /*.replace(/ +/g, ' '); // Replace double spaces that may occur when unknow characters were in the source string.*/
+        return morse;
+    }
+	function onMorseEncode(){
+		document.getElementById('MorseEncodeOut').value = stringToMorse(document.getElementById('MorseEncodeIn').value);
+	}
+	</script>
+</div>
+<div class=''>
+
+	<div class='form-group text-left row'>
+	  <label  for='usr' class='col-12'>Text to decode</label>
+	  <textarea id='MorseDecodeIn' rows = '5' class='col-5' name = 'description' onKeyUp='onMorseDecode()' onChange='onMorseDecode()'></textarea>
+	  <textarea readonly id='MorseDecodeOut' rows = '5' class='col-5' name = 'description'></textarea>
+	</div>
+
+	<script>
+    var MORSE_CODE = {'.-': 'a', '-...':'b', '-.-.': 'c', '-..': 'd', '.':'e', '..-.':'f', '--.':'g', '....':'h', '..':'i', '.---':'j', '-.-':'k', '.-..':'l', '--':'m', '-.':'n', '---':'o', '.--.':'p', '--.-':'q', '.-.':'r', '...':'s', '-':'t', '..-':'u', '...-':'v', '.--':'w', '-..-':'x', '-.--':'y', '--..':'z', '.----':'1', '..---':'2', '...--':'3', '....-':'4', '.....':'5', '-....':'6', '--...':'7', '---..':'8', '----.':'9', '-----':'0', '|':' ', '..--.-':'_'};
+
+    var decodeMorse = function(morseCode){
+      var words = (morseCode).split('  ');
+      var letters = words.map((w) => w.split(' '));
+      var decoded = [];
+
+      for(var i = 0; i < letters.length; i++){
+        decoded[i] = [];
+        for(var x = 0; x < letters[i].length; x++){
+            if(MORSE_CODE[letters[i][x]]){
+                decoded[i].push( MORSE_CODE[letters[i][x]].toUpperCase() );
+            }
+        }
+      }
+
+      return decoded.map(arr => arr.join('')).join(' ');
+    }
+	function onMorseDecode(){
+		document.getElementById('MorseDecodeOut').value = decodeMorse(document.getElementById('MorseDecodeIn').value);
+	}
+	</script>
+</div>	
+ <div>
+    Be careful, capital letters are lost during encoding.
+    </div>
 "
 
 

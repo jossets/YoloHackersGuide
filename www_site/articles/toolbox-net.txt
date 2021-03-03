@@ -34,7 +34,8 @@ Une adresse IP (avec IP pour Internet Protocol) est un identifiant, qui est attr
  
 Les adresses IPv4 (version 4) sont codées sur 32 bits. Elles sont généralement représentées en notation décimale avec quatre nombres compris entre 0 et 255, séparés par des points.
 Exemple : 172.16.254.1
- 
+   
+   
 Un serveur possède autant d'adresses que de cartes réseaux. 
 Certaines adresses ont une utilisation réservée: 
 - 127.0.0.1, appelée <i>loopback</i> désigne notre serveur.
@@ -54,6 +55,8 @@ _192.168.X.X/16, 172.16.0.0/12 et 10.X.X.X/8_
 
 Les adresses 192.168.X.X/16, 172.16.0.0/12 et 10.X.X.X/8 sont réservées pour les réseaux locaux.
 Vous ne devez pratiquer de scans et des exploits que sur des machines joignables sur ces plages d'adresses.
+   
+   
 
 <a href='https://fr.wikipedia.org/wiki/Adresse_IP'>Article sur Wikipedia: https://fr.wikipedia.org/wiki/Adresse_IP</a>
 "

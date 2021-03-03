@@ -123,6 +123,149 @@ It usually contains the directories:
 </code></pre>
 "
 
+
+[shell-permissions]
+id=shell-permissions
+category=Shell
+keywords=
+title=Unix - Permissions des fichiers
+title_en=Unix - File Permission
+desc="Tous les fichiers et répertoires ont un propriétaire, et font parti d'un groupe.   
+Chaque fichier défini donc des permissions pour:   
+- User:  le propriétaire   
+- Group: les utilisateurs qui font partie du groupe   
+- Other: les utilisateurs qui ne sont ni propriétaire ni dans le groupe   
+   
+Les permissions de base sont:   
+- Read: Lecture    
+- Write: Ecriture    
+- eXecute: Execution    
+   
+Lecture des droits des fichiers
+<pre><code>ls -al          : -al permet de lister les droits des fichiers, y compris cachés
+ rwxr-xr--
+ \ /\ /\ /
+  v  v  v
+  |  |  droits des autres utilisateurs (o)
+  |  |
+  |  droits des utilisateurs appartenant au groupe (g)
+  |
+ droits du propriétaire (u)
+</code></pre> 
+ 
+<pre><code>$ ls -al           
+total 192
+drwxrwxr-x 18 yolo yolo 4096 janv. 25 14:23 .          : droits du répertoire courant
+drwxrwxr-x 26 yolo yolo 4096 févr.  5 10:55 ..         : droits du répertoire parent
+-rw-rw-r--  1 yolo yolo 5917 janv. 25 14:23 readme.txt : lecture /écriture User/Group, lecture seule pour Other
+-rwxr-xr-x  1 yolo yolo 2642 janv. 25 11:31 run        : lecture/écriture/execution pour le User, lecture/execution pour le groupe et les autres
+</code></pre>   
+   
+Des permissions supplémentaires existent:   
+- SUID: Set UID, le fichier est éxécuté avec les droits de son propriétaire   
+- SGID: Set GUID, le fichier est éxécuté avec les droits de son groupe   
+- Sticky Bit: Lorsque ce droit est positionné sur un répertoire, il interdit la suppression d'un fichier qu'il contient à tout utilisateur autre que le propriétaire du fichier.   
+   
+<pre><code>$ ls -al           
+total 192
+drwxrwxr-x 18 yolo yolo 4096 janv. 25 14:23 .          
+drwxrwxr-x 26 yolo yolo 4096 févr.  5 10:55 ..         
+rwsr-xr-x  1 yolo yolo 2642 janv. 25 11:31 run        : le x est remplacé par un s pour le User
+</code></pre>  
+Le SUID bit nous permet de lancer des commandes avec les droits d'un autre utilisateur et faire de l'élévation de privilège.
+"
+desc_en="All files and directories have an owner, and are part of a group.   
+Each file therefore defines permissions for:   
+- User: the owner   
+- Group: users who are part of the group   
+- Other: users who are neither the owner nor in the group   
+   
+Basic permissions are:   
+- Read: Read    
+- Write: Writing    
+- eXecute: Execution    
+   
+Listing file rights   
+<pre><code>ls -al          : -al allows to list the rights of files, including hidden ones.
+ rwxr-xr--
+ \ /\ /\ /
+  v  v  v
+  |  |  rights of other users (o)
+  |  |
+  |  rights of users belonging to the group (g)
+  |
+  owner's rights (u)
+</code></pre> 
+<pre><code>$ ls -al           
+total 192
+drwxrwxr-x 18 yolo yolo 4096 janv. 25 14:23 .          : rights of the current directory
+drwxrwxr-x 26 yolo yolo 4096 févr.  5 10:55 ..         : parent directory rights
+-rw-rw-r--  1 yolo yolo 5917 janv. 25 14:23 readme.txt : read/write User/Group, read only for Other
+-rwxr-xr-x  1 yolo yolo 2642 janv. 25 11:31 run        : read/write/execute for user, read/execute for group and others
+</code></pre>   
+
+
+Additional permissions exist:   
+- SUID: Set UID, the file is executed with the rights of its owner.   
+- SGID: Set GUID, the file is executed with the rights of its group.   
+- Sticky Bit: When this right is set on a directory, it prevents any user other than the owner of the file from deleting a file in the directory.   
+   
+<pre><code>$ ls -al           
+total 192
+drwxrwxr-x 18 yolo yolo 4096 janv. 25 14:23 .          
+drwxrwxr-x 26 yolo yolo 4096 févr.  5 10:55 ..         
+rwsr-xr-x  1 yolo yolo 2642 janv. 25 11:31 run        : the x is replaced by an s for User
+</code></pre>  
+The SUID bit allows us to launch commands with the rights of another user and make privilege elevation.
+"
+
+
+[chmod]
+id=chmod
+category=Shell
+keywords=
+title="Changer les droits d'un fichier"
+title_en=Set file permissions
+desc="La commande chmod permet d'ajouter (+) ou supprimer (-) les droits (r,w,x) aux propriétaire (u), group (g), autres (o) ou tous (a)
+<pre><code>chmod u+x ./run  : ajout du droit en execution pour le propriétaire
+chmod g-x ./run  : suppression du droit d'execution pour le groupe
+chmod o+r ./run  : ajout du droit en lecture pour les autres
+chmod a+w ./run  : ajout du droit en écriture pour tous
+</code></pre>
+   
+Il est possible de préciser les valeurs de x,r,w sont directement sous forme binaire.
+<pre><code>r=4, w=2, x=1 
+
+rwx = 4+2+1 = 7
+rx- = 4+2+0 = 6
+r-- = 4+0+0 = 5
+
+rwxrx-r-- = 764
+chmod 764 readme.txt
+</code></pre>
+
+"
+desc_en="The chmod command allows to add (+) or remove (-) the rights (r,w,x) to the owner (u), group (g), others (o) or all (a).
+<pre><code>chmod u+x ./run  : the owner can execute
+chmod g-x ./run  : the group can't execute
+chmod o+r ./run  : others can read
+chmod a+w ./run  : all can write in the file
+</code></pre>
+   
+Values of x,r,w can be set in binary form.
+<pre><code>r=4, w=2, x=1 
+
+rwx = 4+2+1 = 7
+rx- = 4+2+0 = 6
+r-- = 4+0+0 = 5
+
+rwxrx-r-- = 764
+chmod 764 readme.txt
+</code></pre>
+"
+
+
+
 [Files]
 id=files
 category=Shell

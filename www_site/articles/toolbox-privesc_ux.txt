@@ -189,7 +189,7 @@ Sudo permet de lancer des commandes en tant qu'un autre utilisateur.<br/>
 <br/>
 Pour connaitre les droits sudo de votre compte, il faut lancer la commande sudo -l et saisir votre mot de passe:
 <pre><code>sudo -l
-L'utilisateur user1 peut utiliser les commandes suivantes sur target-host :
+L'utilisateur user1 peut utiliser les commandes suivantes sur target-host :
     (ALL) NOPASSWD: /usr/bin/find
     user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py
 </code></pre>
@@ -208,7 +208,7 @@ Sudo allows to launch commands as another user.<br/>
 <br/>
 To know the sudo rights of your account, you must launch the command sudo -l and enter your password:
 <pre><code>sudo -l
-User1 can use the following commands on target-host :
+User1 can use the following commands on target-host :
     (ALL) NOPASSWD: /usr/bin/find
     user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py
 </code></pre>
@@ -297,30 +297,6 @@ Many processes allow to launch a shell. Perfect with sudo or a setUID bit.
 Reference: https://gtfobins.github.io/
 "
 
-<<<<<<< HEAD
-[bash]
-id=bash
-category=PrivEscUx
-keywords=
-title=Bash: shell
-desc="Bash permet d'ouvrir un shell avec les droits d'un autre utilisateur.   
-Sudo   
-<pre><code>sudo bash -p
-</code></pre>
-Setuid bit positionné   
-<pre><code>./bash -p
-</code></pre>
-"
-title_en=Bash: shell
-desc_en="Bash can spawn a shell with another user rights.   
-Sudo   
-<pre><code>sudo bash -p
-</code></pre>
-Setuid bit set   
-<pre><code>./bash -p
-</code></pre>
-"
-=======
 
 [less]
 id=less
@@ -391,7 +367,6 @@ To open a shell, find a known file then launch the command: /bin/sh.
 "
 
 
->>>>>>> 8b0cd3fef9928395a4dc74c8fad522913442630c
 
 [etcpasswd]
 id=etcpasswd
@@ -405,7 +380,7 @@ Ajoutez une entrée avec un UID de 0, et un mot de passe vide.
 su myroot 
 </code></pre>
 "
-title_en=Add a passwordless account with root rights
+title_en=Add a password less account with root rights
 desc_en="
 If you have the rights to modify /etc/passwd, you can be root. For example tee with a sudo as root.
 Add an entry with a UID of 0 (root UID), and an empty password.

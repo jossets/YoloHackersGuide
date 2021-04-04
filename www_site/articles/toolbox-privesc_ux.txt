@@ -187,38 +187,50 @@ title=Sudo
 desc="
 Sudo permet de lancer des commandes en tant qu'un autre utilisateur.<br/>
 <br/>
-Pour connaitre les droits sudo de votre compte, il faut lancer la commande sudo -l et saisir votre mot de passe:
+Pour connaitre les droits sudo de votre compte, il faut lancer la commande sudo -l. Il est parfois demandé de saisir votre mot de passe.
 <pre><code>sudo -l
 L'utilisateur user1 peut utiliser les commandes suivantes sur target-host :
     (ALL) NOPASSWD: /usr/bin/find
     user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py
 </code></pre>
-Il est alors possible de lancer des commandes en tant que user2 avec le flag -u user2
+
+La première ligne est: (ALL) NOPASSWD: /usr/bin/find    
+Il est possible de lancer la commande /usr/bin/find en tant que n'importe quel utilisateur du serveur, en particulier root.     
 <pre><code>sudo /usr/bin/find  
-sudo -u user2 /usr/bin/python3  /home/user2/run.py 
 </code></pre>
-Vous pouvez lancer find avec les droits d'un compte root, et run.py avec les droits du compte user2.<br/>
-<br/>
-Si l'option NOPASSWD n'est pas définie, la commande sudo demande le mot de passe du compte courant. Si vous être entré par un webshell, ou une connection ssh avec clef privée, il faudra se débrouiller pour connaitre le mot de passe.<br/>
+    
+user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py
+Il est ici possible de lancer la commande '/usr/bin/python3 /home/user2/run.py' en tant que user2.    
+Pour celà on utilise la commande 'sudo' avec le flag '-u user2'
+<pre><code>sudo -u user2 /usr/bin/python3  /home/user2/run.py 
+</code></pre>
+
+Si l'option NOPASSWD est définie, vous n'avez pas à saisir de mots de passe. Sinon, la commande sudo demande le mot de passe du compte courant. Si vous être entré par un webshell, ou une connection ssh avec clef privée, il faudra se débrouiller pour connaitre le mot de passe.    
 "
 
 title_en=Sudo 
 desc_en="
-Sudo allows to launch commands as another user.<br/>
+Sudo is used to run commands as another user.<br/>
 <br/>
-To know the sudo rights of your account, you must launch the command sudo -l and enter your password:
+To know the sudo rights of your account, you have to run the command sudo -l. Sometimes you are asked to enter your password.
 <pre><code>sudo -l
-User1 can use the following commands on target-host :
+The user1 can use the following commands on target-host:
     (ALL) NOPASSWD: /usr/bin/find
     user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py
 </code></pre>
-It is then possible to run commands as user2 with the option -u user2
+
+The first entry is: (ALL) NOPASSWD: /usr/bin/find    
+It is possible to run the /usr/bin/find command as any server user, especially root.     
 <pre><code>sudo /usr/bin/find  
-sudo -u user2 /usr/bin/python3  /home/user2/run.py 
 </code></pre>
-You can run find with root account rights, and run.py with user2 account rights..<br/>
-<br/>
-If the NOPASSWD option is not defined, the sudo command asks for the current account password. If you have entered through a webshell, or an ssh connection with a private key, you will have to manage to know the password.<br/>
+    
+Second entry is: user2 NOPASSWD: /usr/bin/python3 /home/user2/run.py     
+Here it is possible to run the command '/usr/bin/python3 /home/user2/run.py' as user2.    
+For this we use the 'sudo' command with the '-u user22' flag
+<pre><code>sudo -u user2 /usr/bin/python3 /home/user2/run.py 
+</code></pre>
+
+If the NOPASSWD option is set, you do not have to enter any passwords. Otherwise, the sudo command asks for the password of the current account. If you are logged in via a webshell, or an ssh connection with private key, you will have to figure out the password.    
 "
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; SetUIDbit

@@ -565,6 +565,74 @@ Login bruteforce
 
 
 
+[110POP3]
+id=110POP3
+category=NetworkDiscovery
+keywords=
+title=110: POP3
+desc="
+Le protocole POP3 sert à relever ses mails sur un serveur distant.    
+Si vous avez les identifiants et mots de passe, connectez vous en netcat ou telnet.
+<pre><code>$ nc 10.0.12.10 110
+</code></pre>
+Une fois connecté, s'authentifier avec 
+<pre><code>USER XXXXXX
+PASS XXXXXX
+</code></pre>
+Afficher la liste des mails avec:
+<pre><code>LIST
+</code></pre>
+Lire le mail numéro 1
+<pre><code>RETR 1
+</code></pre>
+Quitter le serveur.
+<pre><code>QUIT
+</code></pre>
+"
+; eng
+title_en=110: POP3
+desc_en="
+POP3 protocol is used to get your mails from a distant server.    
+If you have the login/password, connect thanks to netcat or telnet
+<pre><code>$ nc 10.0.12.10 110
+</code></pre>
+Once connected, authenticate with login/password 
+<pre><code>USER XXXXXX
+PASS XXXXXX
+</code></pre>
+Get the mails list
+<pre><code>LIST
+</code></pre>
+Read mail number 1
+<pre><code>RETR 1
+</code></pre>
+Quit the server.
+<pre><code>QUIT
+</code></pre>
+"
+
+
+[110POP3BF]
+id=110POP3BF
+category=NetworkDiscovery
+keywords=
+title=110: POP3 Bruteforce
+desc="
+L'authentification POP3 peut être brute forcée avec hydra.
+<pre><code>hydra -V -l username -P wordlist.txt 10.0.12.10 pop3
+</code></pre>
+"
+; eng
+title_en=110: POP3 Bruteforce
+desc_en="
+Use hydra to bruteforce POP3 authent.
+<pre><code>hydra -V -l username -P wordlist.txt 10.0.12.10 pop3
+</code></pre>
+"
+
+
+
+
 [3306MySQL]
 id=3306MySQL
 category=NetworkDiscovery
@@ -609,4 +677,46 @@ quit;
 "
 
 
+
+
+
+[PORTKNOCK]
+id=PORTKNOCK
+category=NetworkDiscovery
+keywords=
+title=Port knocking
+desc="
+Pour rendre certains services invisibles aux scans, les serveurs peuvent utiliser une fonctionnalité de Port Knocking.    
+Les ports sensibles ne sont ouverts qu'une fois une séquence particulière de paquets reçus, idéalement en UDP.    
+Cette fonctionnalité peut être implémentée directement dans le routeur, le firewall ou l'application.
+Envoyer un unique paquet vide en UDP sur le port 1337
+<pre><code>nc -u -z localhost 1337
+</code></pre>
+Envoyer une série de paquets vides sur les port UDP 1337 4444 6666
+<pre><code>nc -u -z localhost 1337 4444 6666
+</code></pre>
+Envoyer un unique paquet contenant le message KnockKnockKnock sur le port UDP 1337
+<pre><code>for i in 10124 11056 18639; do printf Knock | nc -u -q1 localhost $i; done
+</code></pre>
+"
+; eng
+title_en=Port knocking
+desc_en="
+Pour rendre certains services invisibles aux scans, les serveurs peuvent utiliser une fonctionnalité de Port Knocking.    
+Les ports sensibles ne sont ouverts qu'une fois une séquence particulière de paquets reçus, idéalement en UDP.    
+Cette fonctionnalité peut être implémentée directement dans le routeur, le firewall ou l'application.    
+    
+Envoyer un unique paquet vide en UDP sur le port 1337
+<pre><code>nc -u -z localhost 1337
+</code></pre>
+Envoyer une série de paquets vides sur les port UDP 1337 4444 6666
+<pre><code>nc -u -z localhost 1337 4444 6666
+</code></pre>
+Envoyer un unique paquet contenant le message KnockKnockKnock sur le port UDP 1337
+<pre><code>printf KnockKnockKnock | nc -u -q1 localhost 1337
+</code></pre>
+Envoyer une série de paquets contenant le message KnockKnockKnock sur les port UDP 1337 4444 6666
+<pre><code>for i in 1337 4444 6666; do printf Knock | nc -u -q1 localhost $i; done
+</code></pre>
+"
 

@@ -27,7 +27,7 @@ Nous allons commencer par faire un inventaire exhaustif de ce qui est accessible
 - Trouver un process qui tourne en tache de fond avec des droits root et modifier ses inputs.<br/>
 - Trouver un exploit kernel. Cette dernière option, radicale car elle peut planter la machine, est trés efficace sur les vieux serveurs...
 
-Sur ses premières machines, il est préférable de faire ces énumérations en lançant les commandes manuellement pour s'approprier les options et les outputs. Une fois à l'aise, et sachant ce que l'on chercher, il est possible d'utiliser des scripts qui font ces énumérations pour nous.
+Sur ses premières machines, il est préférable de faire ces énumérations en lançant les commandes manuellement pour s'approprier les options et les outputs. Une fois à l'aise, et sachant ce que l'on cherche, il est possible d'utiliser des scripts qui font ces énumérations pour nous.
 "
 title_en=Principle
 desc_en="

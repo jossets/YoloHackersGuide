@@ -18,11 +18,11 @@ L'injection de commande Shell est possible quand un programme utilise une donné
 
 Par exemple: un formulaire permet de saisir son nom et l'afficher.
 Le code coté serveur va ressembler à: 
-<pre><code>system ('echo '.$NAME);
-</code></pre> 
+````system ('echo '.$NAME);
+````
 Si nous saisissons: 
-<pre><code>YOLO; cat /etc/password;
-</code></pre> 
+````YOLO; cat /etc/password;
+````
 Le serveur va enchainer les deux commandes en executant:
 <pre><code>system ('echo YOLO; cat /etc/password;'); 
 </code></pre> 

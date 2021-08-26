@@ -52,7 +52,7 @@ The server-side code looks like:
 <pre><code>system ('echo '.$NAME);
 </code></pre> 
 Instead of just entering Yolo, you enter: 
-<pre> code>YOLO; cat /etc/password;
+<pre><code>YOLO; cat /etc/password;
 </code></pre> 
 The server will chain the two commands by executing:
 <pre><code>system ('echo YOLO; cat /etc/password;'); 

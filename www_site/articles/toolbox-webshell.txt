@@ -142,7 +142,7 @@ To upgrade our shell, use python to get a tty shell:
 "
 
 [ncupgrade2]
-id=ncupgrade
+id=ncupgrade2
 category=Webshell 
 keywords=
 title=Upgrader son shell avec historique et completion
@@ -545,7 +545,7 @@ webshell.jpg: JPEG image data
 
 
 [imgwebshell2]
-id=imgwebshell
+id=imgwebshell2
 category=Webshell 
 keywords=
 title=File upload Webshell : Gif

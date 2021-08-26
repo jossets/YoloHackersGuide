@@ -18,7 +18,7 @@ Vous allez certainement downloader des fichiers pour les analyser, ou uploader d
 "
 title_en=Principle
 desc_en="
-As soon as you get your initial foothold on the target server, your next step is to transfert text or binary files. <br/>
+As soon as you get your initial foothold on the target server, your next step is to transfer text or binary files. <br/>
 You'll probably download some target files and upload some tools such as backdoors or privilege escalation scripts...
 "
 
@@ -61,7 +61,7 @@ To transfer a file without worrying about its size, just launch an HTTP server a
 <pre><code>python -m SimpleHTTPServer 8000
 php -S 0.0.0.0:8000
 </code></pre>
-Be carefull, eveyone is able to browse this new server file system.
+Be careful, eveyone is able to browse this new server file system.
 "
 
 
@@ -78,9 +78,9 @@ scp -P 2222 file.txt remote_username@10.10.0.2:/remote/directory
 scp remote_username@10.10.0.2:/remote/file.txt /local/directory
 </code></pre>
 "
-title_en=Transfert with ssh account
+title_en=Transfer with ssh account
 desc_en="
-With an ssh accès, let use scp
+With an ssh access, let use scp
 <pre><code>scp file.txt remote_username@10.10.0.2:/remote/directory
 scp -i id_rsa file.txt remote_username@10.10.0.2:/remote/directory
 scp -P 2222 file.txt remote_username@10.10.0.2:/remote/directory

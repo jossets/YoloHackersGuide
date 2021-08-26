@@ -270,6 +270,33 @@ Add a custom Header with curl : -H 'header: value'
 </code></pre>
 "
 
+[HTTPAgent]
+id=HTTPAgent
+category=HTTP
+keywords=
+chall=TrainingHTTPAgent
+title="HTTP: User-Agent "
+desc="
+Le header des requêtes contient un champ User-Agent.   
+Il est utilisé par les navigateurs pour s'identifier et donner des information sur leur version.    
+Le serveur peut adapter la page à un vieux navigateur Internet Explorer ou un Firefox dernier cris.   
+
+Curl v7.68.0 utilise 'curl/7.68.0' comme User-Agent. Il est possible de définir la valeur du User-Agent avec l'option -A.
+<pre><code>curl -A 'MyAgent' http://localhost:8001
+</code></pre>
+
+"
+title_en="HTTP User-Agent"
+desc_en="
+The header of HTTP requests contains a User-Agent field.   
+It is used by browsers to identify themselves and give information about their version.    
+The server can adapt the page to an older Internet Explorer or a newer Firefox browser.   
+
+Curl v7.68.0 uses 'curl/7.68.0' as the User-Agent. It is possible to set the User-Agent value with the -A option.
+<pre><code>curl -A 'MyAgent' http://localhost:8001
+</code></pre>
+"
+
 
 [HTTPParam]
 id=HTTPParam

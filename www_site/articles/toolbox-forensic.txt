@@ -12,6 +12,35 @@ desc="
 "
 
 
+[file]
+id=file
+category=Forensic
+keywords=
+title=Identifier un fichier
+title_en="Identify a file"
+desc="
+Identifier le type d'un fichier se fait généralement en regardant l'extension du fichier.   
+*.zip: archives compressées au format zip.   
+*.doc: fichiers Words.   
+   
+Parfois l'extension ne correspond pas, ou le fichier n'en a pas.    
+La commande 'file' examine le contenu du fichier, à la recherche d'entêtes caractéristiques.    
+````
+file secret.zip
+````
+"
+desc_en="
+Identifying the type of a file is usually done by looking at the file extension.   
+*.zip: compressed archives in zip format.   
+*.doc: Words files.  
+    
+Sometimes the extension does not match, or the file does not have one.    
+The 'file' command examines the contents of the file, looking for well known headers.
+````
+file secret.zip
+````
+"
+
 
 [zip]
 id=zip
@@ -114,5 +143,60 @@ Extract mailboxes, then read them.
 ````
 readpst mails.pst 
 cat mails.mbox
+````
+"
+
+
+
+
+[odt]
+id=odt
+category=Forensic
+keywords=
+title=Odt - 
+title_en=Odt - OpenOffice/LibreOffice word
+desc="
+Un fichier Odt est un fichier de traitement de texte tel OpenOffice ou LibreOffice, similaire à un document Word Docx.
+   
+Vérification du format du fichier:
+````
+$ file doc.odt
+doc.odt: OpenDocument Text
+````
+
+Le fichier est une archive au format Zip contenant une arborescence de fichiers xml.    
+On peut la dézipper et regarder le contenu des fichiers.
+````
+unzip doc.odt    
+cat content.xml
+````
+    
+On peut aussi utiliser odt2txt pour extraire le texte:
+````
+odt2txt doc.odt
+````
+"
+
+
+desc_en="
+An Odt file is a text document created by OpenOffice and LibreOffice.    
+Odt files are similar to Word .docx files.    
+    
+Check file format:
+````
+$ file doc.odt
+doc.odt: OpenDocument Text
+````
+
+An Odt file is a Zip archive containing xml files.    
+Let unzip it, and read content.xml file.
+````
+unzip doc.odt    
+cat content.xml
+````
+    
+Or use odt2txt to extract text:
+````
+odt2txt doc.odt
 ````
 "

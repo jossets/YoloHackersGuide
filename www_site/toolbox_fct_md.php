@@ -81,16 +81,16 @@
 
 
     function print_content() {
-        global $exploit_files;
+        global $exploits_all;
         global $LANG;
-        foreach ($exploit_files as $filename) {
+        //foreach ($exploit_files as $filename) {
             $to_print=null;
-            $exploits = parse_ini_file($filename, true);
+            //$exploits = parse_ini_file($filename, true);
             
             //
             // Filter content to print
 
-            foreach($exploits as $exploit) {
+            foreach($exploits_all as $exploit) {
                 //print_r($exploit);
                 // Search : ?id=a,b,c,d
                 if (isset($_GET['id'])) {
@@ -126,25 +126,26 @@
             // Print content
 
             if ($to_print ) {
-                if ($exploits['Intro'] ) {
-                    $intro = $exploits['Intro'];
-                    $title=$intro['title'];
-                    if ($LANG!="fr") {
-                        if (isset($intro['title_en'])&&(trim($intro['title_en'])!="")) {
-                            $title=$intro['title_en'];
-                        }
-                    }
-                    if ($title) {
-                        print('
-                        <div class="row no-border  my-4 map-color-bg-normal map-color-text pl-1">
-                        <h4 class="my-vertical-centered" id="chapter_'.str_replace(' ', '_', $title).'">'.$title.'
-                        </h4>
-                        </div>
-                        ');
-                    }
-                }
+				foreach($to_print as $exploit) {
+					if ($exploit['id']==="intro" ) {
+						$intro = $exploit;
+						$title=$intro['title'];
+						if ($LANG!="fr") {
+							if (isset($intro['title_en'])&&(trim($intro['title_en'])!="")) {
+								$title=$intro['title_en'];
+							}
+						}
+						if ($title) {
+							print('
+							<div class="row no-border  my-4 map-color-bg-normal map-color-text pl-1">
+							<h4 class="my-vertical-centered" id="chapter_'.str_replace(' ', '_', $title).'">'.$title.'
+							</h4>
+							</div>
+							');
+						}
+					}
                 
-                foreach($to_print as $exploit) {
+                
                     if (($exploit['id']!='intro')&&($exploit['id']!='section')) {
                         print_entry($exploit);
                         print_entry_hints($exploit);
@@ -162,16 +163,16 @@
                     }
                 } 
             }
-        }
+        //}
     }
 
     function print_menu_entries() {
-        global $exploit_files;
+        global $exploits_all;
         global $LANG;
-        foreach ($exploit_files as $filename) {
-            $exploits = parse_ini_file($filename, true);
-            if ($exploits['Intro'] ) {
-                $intro = $exploits['Intro'];
+        foreach ($exploits_all as $exploit) {
+            //$exploits = parse_ini_file($filename, true);
+            if ($exploit['id']==="intro" ) {
+                $intro = $exploit;
                 $title=$intro['title'];
                 if ($LANG!="fr") {
                     if (isset($intro['title_en'])&&(trim($intro['title_en'])!="")) {

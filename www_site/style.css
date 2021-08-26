@@ -4,7 +4,7 @@
 }
 li { font-family: Consolas; font-size: 14px;} 
 
-
+h2 { display: none; }
 pre code {
     font-size: inherit;
     color: rgb(173, 170, 161);

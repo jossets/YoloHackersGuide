@@ -26,6 +26,40 @@
     include 'toolbox_http_header.php'; 
 ?>
 
+
+<script>
+function getCookie(name) {
+    var dc = document.cookie;
+    var prefix = name + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+    }
+    else
+    {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+        end = dc.length;
+        }
+    }
+    // because unescape has been deprecated, replaced with decodeURI
+    //return unescape(dc.substring(begin + prefix.length, end));
+    return decodeURI(dc.substring(begin + prefix.length, end));
+} 
+
+function OnVideoButtonClick(id) {
+	if (getCookie("YOLOCTF_LANG")==null) {
+		// /videos.php?id="+ videoname + "&mode=embed&w=" + webBrowser.Width + "&h=" + webBrowser.Height;
+		url="/videos.php?id="+ id + "&mode=embed";
+		window.open(url, '_blank').focus();
+	} else {
+   console.log('[[Cmd OpenVideo '+id+']]');
+	}
+}
+</script>
+
 <?php
     //
     // PHP Markdown lib

@@ -147,8 +147,9 @@ cat mails.mbox
 "
 
 
-
-
+;
+;
+;
 [odt]
 id=odt
 category=Forensic
@@ -199,4 +200,242 @@ Or use odt2txt to extract text:
 ````
 odt2txt doc.odt
 ````
+"
+
+
+;
+;
+;
+
+[wireshark]
+id=wireshark
+category=Forensic
+keywords=
+title=Wireshark - Extraire un flux TCP
+title_en=Wireshark - Extract TCP datas
+desc="     
+<u>Méthode 1:</u>      
+Dans le Menu [Statistiques], lance l'outil [Conversations]    
+Le premier onglet liste les trames ethernets.    
+Le second onglet liste les paquets IP extraits des trames ethernets. Il permet d'identifier les IP des machines.       
+L'onglet TCP, liste les sessions TCP contenues dans les paquets IP et reconstituées par Wireshark.    
+Selectionne l'onglet TCP, click sur un flux TCP puis le bouton 'follow Stream'       
+    
+<u>Méthode 2:</u>      
+Survoler les paquets, identifier le flux TCP, et faire un Click droit sur un paquet TCP, et 'Suivre/TCP Stream'. 
+````
+"
+
+desc_en="
+<u>Method 1:</u>      
+Use the tool: Statistics/Conversations
+Select the IP tab
+Select the TCP tab, click on a TCP stream and then the 'follow stream' button    
+    
+<u>Method 2:</u>      
+For experienced plux, hover over the packets, identify the TCP stream, and right click on a TCP packet, and 'Follow/TCP Stream'. 
+````
+"
+
+
+
+[tshark]
+id=tshark
+category=Forensic
+keywords=
+title=Tshark - Extraire un flux TCP
+title_en=Tshark - Extract TCP datas
+desc="     
+Identifier les connections TCP   
+<pre><code>tshark -nlr FILENAME -Y tcp.flags.syn==1 -T fields -e tcp.stream</code></pre>
+Tshark recherche les connections TCP et leur donne un identifiant: 0, 1,...   
+    
+Dumper le contenu de chaque flux en remplaçant ID par l'identifiant du flux: 0, 1,...   
+<pre><code>tshark -nlr FILENAME -qz &quot;follow,tcp,ascii,ID&quot;</code></pre>
+"
+
+desc_en="
+Uses tshark to identify TCP connections   
+<pre><code>tshark -nlr FILENAME -Y tcp.flags.syn==1 -T fields -e tcp.stream</code></pre>
+tshark looks for TCP connections and gives them an ID: 0, 1,...   
+    
+Dump the contents of each stream by replacing ID with the stream ID: 0, 1,...   
+<pre><code>tshark -nlr FILENAME -qz &quot;follow,tcp,ascii,ID&quot;</code></pre>
+"
+
+  
+
+
+[steghide]
+id=steghide
+category=Forensic
+keywords=
+title=Steghide - Cacher un fichier dans une image
+title_en=Steghide - Hiding a file in an image
+desc="     
+<u>Cacher un fichier dans une image</u>
+```
+steghide embed -cf IMAGEFILE -ef FILETOHIDE 
+```
+
+<u>Extraire le fichier </u>
+```
+steghide extract -sf IMAGEFILE -p PASSWORD
+```
+
+<u>Bruteforcer l'extraction avec rockyou </u>
+```
+ROCKYOUFILE=/usr/share/wordlists/rockyou.txt
+ROCKYOULIST=`cat /usr/share/wordlists/rockyou.txt`
+for word in $ROCKYOULIST
+do
+    echo $word
+    ret=`steghide extract -sf $1 -p $word`
+    if [ $? -eq 0 ]
+    then
+        echo Found 
+        exit 0
+    fi
+done
+```
+
+<u>Et en vidéo ?</u>    
+<button id='video-proc-stegano' type='button' onclick='OnVideoButtonClick(this.id)'>Tuto Stegano</button>
+"
+
+desc_en="
+<u>Hiding a file in an image</u>
+```
+steghide embed -cf IMAGEFILE -ef FILETOHIDE 
+```
+
+<u>Extract the file</u>
+```
+steghide extract -sf IMAGEFILE -p PASSWORD
+```
+
+<u>Bruteforce</u>
+```
+ROCKYOUFILE=/usr/share/wordlists/rockyou.txt
+ROCKYOULIST=`cat /usr/share/wordlists/rockyou.txt`
+for word in $ROCKYOULIST
+do
+    echo $word
+    ret=`steghide extract -sf $1 -p $word`
+    if [ $? -eq 0 ]
+    then
+        echo Found 
+        exit 0
+    fi
+done
+```
+"
+
+
+
+
+[DiskImageMount]
+id=DiskImageMount
+category=Forensic
+keywords=
+title=Lire une image disque brute
+title_en=Read a raw disk image
+desc="  
+<u>Mounter le système de fichier sur le répertoire	/tmp</u>
+<pre><code>mkdir /tmp/tmpmnt
+sudo mount disk.img /tmp/tmpmnt
+ls -al /tmp/tmpmnt
+</code></pre>  
+    
+	
+<u>Démounter le point de mountage</u>   
+<pre><code>sudo umount /tmp/tmpmnt </code></pre>
+"
+desc_en="  
+<u>Mounter filesystem on directory /tmp</u>
+<pre><code>mkdir /tmp/tmpmnt
+sudo mount disk.img /tmp/tmpmnt
+ls -al /tmp/tmpmnt
+</code></pre>  
+    
+	
+<u>Umount filesystem</u>   
+<pre><code>sudo umount /tmp/tmpmnt </code></pre>
+"
+
+
+
+[photorec]
+id=photorec
+category=Forensic
+keywords=
+title=Photorec - Recupérer des fichiers effacés
+title_en=Photorec - Recovering deleted files
+desc="  
+<pre><code>photorec disk.img    
+</code></pre> 
+"
+desc_en="  
+<pre><code>photorec ~/forensic/usb1.img    
+</code></pre> 
+"
+
+
+
+[veracrypt]
+id=veracrypt
+category=Forensic
+keywords=
+title=TrueCrypt/Veracrypt - Accéder à une partition chiffrée
+title_en=TrueCrypt/Veracrypt - Cyphered disk image
+desc="  
+Créer un point de montage sur le disque.     
+<pre><code>mkdir /tmp/tmpmnt
+</code></pre> 
+
+Utiliser Veracrypt en mode de compatibilité TrueCrypt (option -tc) et sans accélération (-m=nokernelcrypto) pour monter le disque.
+<pre><code>sudo veracrypt -tc -m=nokernelcrypto  --mount truecrypt_safe.img /tmp/tmpmnt
+Enter password for truecrypt_safe.img: 
+Enter keyfile [none]: 
+Protect hidden volume (if any)? (y=Yes/n=No) [No]: 
+</code></pre>  
+"
+desc_en="  
+Let's create a mount point on the disk.       
+<pre><code>mkdir /tmp/tmpmnt
+</code></pre> 
+
+Let's use Veracrypt in TrueCrypt compatibility mode (option -tc) and without acceleration (-m=nokernelcrypto) to mount the disk. <pre><code>sudo veracrypt -tc -m=nokernelcrypto  --mount truecrypt_safe.img /tmp/tmpmnt
+Enter password for truecrypt_safe.img: 
+Enter keyfile [none]: 
+Protect hidden volume (if any)? (y=Yes/n=No) [No]: 
+</code></pre>  
+"
+
+
+
+[tc2john]
+id=tc2john
+category=Forensic
+keywords=
+title=TrueCrypt - Bruteforce password
+title_en=TrueCrypt - Bruteforce password
+desc="  
+<u>Extraire le Hash</u>    
+<pre><code>$ truecrypt2john.py truecrypt_safe.img > hash
+</code></pre> 
+    	 
+<u>Casser le Hash</u>    
+     
+<pre><code>$ john --format=tc_ripemd160 hash
+</code></pre> 
+"
+desc_en="  
+<u>Extracting the Hash</u>     
+<pre><code>$ truecrypt2john.py truecrypt_safe.img > hash
+</code></pre> 
+    	 
+<u>Breaking the Hash</u> 
+<pre><code>$ john --format=tc_ripemd160 hash
+</code></pre> 
 "

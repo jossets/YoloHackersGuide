@@ -418,6 +418,78 @@ For an HTTPS url, add the command line option
 "
 
 
+[80HTTPwfuzz]
+id=80HTTPwfuzz
+category=NetworkDiscovery
+keywords=
+title="80: HTTP - Bruteforcer les paramètres d'une Url"
+desc="
+<h5>Wfuzz</h5>
+<u>Fuzzer un id de 000 à 020</u>
+<pre><code>wfuzz -z range,000-020 http://satctrl.bahamas.ysh/?id=FUZZ
+</code></pre>
+    
+<u>Fuzzer le nom d'un paramètre d'url</u>
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?FUZZ=aaaaaaa&quot;
+</code></pre>
+Faire un Ctrl-C, identifier le nombre de caractères des réponses. Par exemple 400.   
+Relancer en utilisant l'option --hh pour exclure les réponses ayant cette taille, et pouvoir facilement identifier les réponses générant une page différente.    
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?FUZZ=aaaaaaa&quot; --hh 400    
+</code></pre> 
+   
+<u>Fuzzer la valeur d'un paramètre d'url</u>
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?command=FUZZ&quot;
+</code></pre>
+Faire un Ctrl-C, identifier le nombre de caractères des réponses. Par exemple 400.   
+Relancer en utilisant l'option --hh pour exclure les réponses ayant cette taille, et pouvoir facilement identifier les réponses générant une page différente. 
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?FUZZ=aaaaaaa&quot; --hh 400    
+</code></pre> 
+    
+<u>Fuzzer un prefix fqdn</u>
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://FUZZ.bahamas.ysh&quot;
+wfuzz -z file,./burp-parameter-names.txt &quot;http://FUZZ.bahamas.ysh&quot; --hh 400    
+</code></pre> 
+   
+<u>Listes utiles</u>    
+<a href='/hackersguide/subdomains-top1million-5000.txt' target=_null>subdomains-top1million-5000.txt</a>    
+<a href='/hackersguide/burp-parameter-names.txt' target=_null>burp-parameter-names.txt</a>   
+From: https://github.com/danielmiessler/SecLists
+"
+
+
+title_en=80: HTTP - Fuzz url parameters 
+desc_en="
+<h5>Wfuzz</h5>
+<u>Fuzz an id from 000 to 020</u>
+<pre><code>wfuzz -z range,000-020 http://satctrl.bahamas.ysh/?id=FUZZ
+</code></pre>
+    
+<u>Fuzz a parameter name</u>
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?FUZZ=aaaaaaa&quot;
+</code></pre>
+Ctrl-C, identify the number of characters in the answers. For example 400.   
+Rerun using the --hh option to exclude responses of this size, and to easily identify responses that generate a different page.     
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?FUZZ=aaaaaaa&quot; --hh 400    
+</code></pre> 
+   
+<u>Fuzzing the value of a url parameter</u>
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?command=FUZZ&quot;
+</code></pre>
+Ctrl-C, identify the number of characters in the answers. For example 400.   
+Rerun using the --hh option to exclude responses of this size, and to easily identify responses that generate a different page.     
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://satctrl.bahamas.ysh/action.php?FUZZ=aaaaaaa&quot; --hh 400    
+</code></pre> 
+    
+<u>Fuzzing an fqdn prefix</u>
+<pre><code>wfuzz -z file,./burp-parameter-names.txt &quot;http://FUZZ.bahamas.ysh&quot;
+wfuzz -z file,./burp-parameter-names.txt &quot;http://FUZZ.bahamas.ysh&quot; --hh 400    
+</code></pre> 
+   
+<u>Usefull lists</u>    
+<a href='/hackersguide/subdomains-top1million-5000.txt' target=_null>subdomains-top1million-5000.txt</a>    
+<a href='/hackersguide/burp-parameter-names.txt' target=_null>burp-parameter-names.txt</a>   
+From: https://github.com/danielmiessler/SecLists
+"
 
 
 [80HTTPbrutebasicauth]

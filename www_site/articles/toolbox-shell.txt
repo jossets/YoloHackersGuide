@@ -292,25 +292,25 @@ keywords=
 title=find
 title_en=find
 desc="La commande find permet de chercher des fichiers dans les répertoires, et éventuellement d'effectuer des actions sur les fichiers trouvés.
-<pre><code>find . -name "*.txt"</code></pre>
+<pre><code>find . -name &quot;*.txt&quot;</code></pre>
 Rechercher les fichiers ayant l'extention .txt dans le répertoire courant et les sous répertoires
-<pre><code>find / -name "*.php"</code></pre>
+<pre><code>find / -name &quot;*.php&quot;</code></pre>
 Rechercher les fichiers ayant l'extention .php à partir de la racine. 
-<pre><code>find / -name "*.php" 2&gt;/dev/null</code></pre>
+<pre><code>find / -name &quot;*.php&quot; 2&gt;/dev/null</code></pre>
 L'écran est saturé par la liste des répertoires qui nous sont interdits en lecture. La commande 2>/dev/null redirige les erreurs vers le fichier virtuel /dev/null ce qui les fait disparaitre de l'affichage.
-<pre><code>find / -name "*.php" -exec ls {} \; 2&gt;/dev/null</code></pre>
+<pre><code>find / -name &quot;*.php&quot; -exec ls {} \; 2&gt;/dev/null</code></pre>
 L'option -exec permet d'éxécuter une commande sur chaque fichier trouvé. Souvent ls -al, ou cat.    
 {} est remplacé par le nom du fichier trouvé.    
 \; signale la fin de la commande à éxécuter.
 "
 desc_en="The find command is used to search for files in directories, and possibly to perform actions on the found files.
-<pre><code>find . -name "*.txt"</code></pre>
+<pre><code>find . -name &quot;*.txt&quot;</code></pre>
 Search for files with the .txt extension in the current directory and subdirectories.   
-<pre><code>find / -name "*.php"</code></pre>
+<pre><code>find / -name &quot;*.php&quot;</code></pre>
 Search for files with the .php extension from the root. 
-<pre><code>find / -name "*.php" 2&gt;/dev/null</code></pre>
+<pre><code>find / -name &quot;*.php&quot; 2&gt;/dev/null</code></pre>
 The screen is saturated with the list of directories that are forbidden to us to read. The command 2>/dev/null redirects the errors to the virtual file /dev/null which makes them disappear from the display.
-<pre><code>find / -name "*.php" -exec ls {} \; 2&gt;/dev/null</code></pre>
+<pre><code>find / -name &quot;*.php&quot; -exec ls {} \; 2&gt;/dev/null</code></pre>
 The -exec option is used to run a command on each file found. Often ls -al, or cat.      
 {} is replaced by the name of the file found.    
 \; is put at the end of the command to be executed.
